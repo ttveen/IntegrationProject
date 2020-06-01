@@ -52,7 +52,7 @@ turnOff(a)
 %% Wait for the heaters to cool down
 t1wait = T1C();
 t2wait = T2C();
-while (abs(t1wait-x1) > 1 ||abs(t2wait()-x2) > 1)
+while (abs(t1wait-x1) > 2 ||abs(t2wait()-x2) > 2)
     t1wait = T1C()
     t2wait = T2C()
     pause(5);
@@ -61,7 +61,7 @@ end
 u = 25;
 time2 = 0;
 i=1;
-figure(4)
+figure(2)
 
 while time2(end) <= endtime
     tic
@@ -121,13 +121,10 @@ cd ..\..
 cd 'Latex/Images/Linearity'
 saveas(gcf,'Comparison','svg')
 %% 2nd Linearity Check
-%f(t,x,u), f(t,x,u) = f(t,x,u1) + f(t,x,0.5*u2);
-%This means that we compare the heating of the two heaters seperate to
-%heating them at the same time
 
 t1wait = T1C();
 t2wait = T2C();
-while (abs(t1wait-x1) > 1 ||abs(t2wait()-x2) > 1)
+while (abs(t1wait-x1) > 2 ||abs(t2wait()-x2) > 2)
     t1wait = T1C()
     t2wait = T2C()
     pause(5);
@@ -142,14 +139,14 @@ while time3(end) <= endtime
     tic
     %disp("Turn on heaters")
     h1(u);
-    h2(0);
+    h2(u);
     
-    t1_3(i) = T1C();
-    t2_3(i) = T2C();
+    t1_2(i) = T1C();
+    %t2_2(i) = T2C();
     
-    plot(time3(end),t1_3(i),'r.')
+    plot(time3(end),t1_2(i),'r.')
     hold on
-    plot(time3(end),t2_3(i),'b.')
+    plot(time3(end),t2_2(i),'b.')
     legend('Heater 1', 'Heater 2')
     xlabel('Time in s')
     ylabel('Temperature in $^{\circ}C$C',  'Interpreter', 'Latex')
@@ -165,7 +162,7 @@ turnOff(a)
 
 t1wait = T1C();
 t2wait = T2C();
-while (abs(t1wait-x1) > 1 ||abs(t2wait()-x2) > 1)
+while (abs(t1wait-x1) > 2 ||abs(t2wait()-x2) > 2)
     t1wait = T1C()
     t2wait = T2C()
     pause(5);
@@ -179,15 +176,15 @@ figure(6)
 while time4(end) <= endtime
     tic
     %disp("Turn on heaters")
-    h1(0);
+    h1(u);
     h2(u);
     
-    t1_4(i) = T1C();
-    t2_4(i) = T2C();
+    %t1_2(i) = T1C();
+    t2_2(i) = T2C();
     
-    plot(time4(end),t1_4(i),'r.')
+    plot(time4(end),t1_2(i),'r.')
     hold on
-    plot(time4(end),t2_4(i),'b.')
+    plot(time4(end),t2_2(i),'b.')
     legend('Heater 1', 'Heater 2')
     xlabel('Time in s')
     ylabel('Temperature in $^{\circ}C$C',  'Interpreter', 'Latex')
@@ -198,36 +195,4 @@ while time4(end) <= endtime
     time4(end+1) = [time4(end) + t];
 end
 time4(end) =[];
-%Turn off heaters
-turnOff(a)
 %% Make the 2nd comparison
-%Since the index vectors of the two seperate expiriments is not guaranteed
-%to be the same length, one measuremnt is interpolated to match the time of
-%the measurement with the most number of measurements
-timeNew = time3;
-if length(time3)>length(time4)
-   t1_4 = interp1(time4,t1_4,time3);
-   t2_4 = interp1(time4,t2_4,time3);
-   timeNew = time3;
-elseif length(time3)<length(time4)
-   t1_3 = interp1(time3,t1_3,time4);
-   t2_3 = interp1(time3,t2_3,time4);
-   timeNew = time4;
-end
-
-t1new2 = t1_3+t1_4-x1;
-t2new2 = t2_3+t2_4-x2;
-figure(7)
-plot(time1,t1,'r.', time1, t2, 'b.')
-hold on
-plot(timeNew,t1new2, 'g.', timeNew, t2new2, 'k.')
-legend({'Heater 1 50%', 'Heater 2 50%', 'Heater 1 Seperate%', 'Heater 2 Seperate%'},'Location', 'northwest')
-xlabel('Time in s')
-ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
-title('Comparison of input linearity')
-xlabel('Time in s')
-ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
-title('Comparison: sum of the two seperate inputs')
-% cd ..\..
-% cd 'Latex/Images/Linearity'
-%saveas(gcf,'ComparisonSeperate','svg')
