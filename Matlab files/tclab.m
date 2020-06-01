@@ -32,6 +32,8 @@ TF = @(V) TK(V) * 9.0/5.0 - 459.67; % Fahrenhiet
 T1C = @() TC(v1());
 T2C = @() TC(v2());
 
+
+
 % LED function (0 <= level <= 1)
 led = @(level) writePWMDutyCycle(a,'D9',max(0,min(1,level)));  % ON
 
@@ -40,3 +42,18 @@ led = @(level) writePWMDutyCycle(a,'D9',max(0,min(1,level)));  % ON
 h1 = @(level) writePWMDutyCycle(a,'D3',max(0,min(100,level))*0.9/100);
 % limit to 0-0.5 (0-100%)
 h2 = @(level) writePWMDutyCycle(a,'D5',max(0,min(100,level))*0.5/100);
+
+% Personal Functions
+getTemp = @() [T1C(), T2C()];
+turnOff = @turnOffFunc;
+
+function turnOffFunc(a)
+% turnOff turns of the two heaters
+
+
+% turn off the heaters by setting both inputs to zero
+writePWMDutyCycle(a,'D3',max(0,min(100,0))*0.9/100); % heater 1
+writePWMDutyCycle(a,'D5',max(0,min(100,0))*0.5/100); % heater 2
+
+disp('The heaters have been turned off');
+end
