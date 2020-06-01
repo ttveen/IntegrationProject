@@ -127,5 +127,4 @@ title('Comparison of input linearity')
 xlabel('Time in s')
 ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
 title('Comparison of input linearity')
-cd 'Figures/Linearity'
-saveas(gcf,'Figures/Linearity/Comparison','svg')
+saveas(gcf,'Comparison',
