@@ -113,7 +113,7 @@ plot(time2,t1new, 'g.', time2, t2new, 'k.')
 legend({'Heater 1 50%', 'Heater 2 50%', 'Heater 1 2*25%', 'Heater 2 2*25%'},'Location', 'northwest')
 xlabel('Time in s')
 ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
-title('Comparison of input linearity')
+title('Comparison: two times half input')
 xlabel('Time in s')
 ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
 title('Comparison of input linearity')
@@ -221,13 +221,13 @@ figure(7)
 plot(time1,t1,'r.', time1, t2, 'b.')
 hold on
 plot(timeNew,t1new2, 'g.', timeNew, t2new2, 'k.')
-legend({'Heater 1 50%', 'Heater 2 50%', 'Heater 1 Seperate%', 'Heater 2 Seperate%'},'Location', 'northwest')
+legend({'Heater 1 50%', 'Heater 2 50%', 'Heater 1 Seperate', 'Heater 2 Seperate'},'Location', 'northwest')
 xlabel('Time in s')
 ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
 title('Comparison of input linearity')
 xlabel('Time in s')
 ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
 title('Comparison: sum of the two seperate inputs')
-% cd ..\..
-% cd 'Latex/Images/Linearity'
-%saveas(gcf,'ComparisonSeperate','svg')
+cd ..\..
+cd 'images/Linearity'
+saveas(gcf,'ComparisonSeperate','svg')
