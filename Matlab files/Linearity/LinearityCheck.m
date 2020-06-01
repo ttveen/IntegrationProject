@@ -100,12 +100,6 @@ xlabel('Time in s')
 ylabel('Temperature in /degC',  'Interpreter', 'Latex')
 title('Input at 25, doubled%')
 
-
-figure(4)
-plot(time1,t1,'r.', time1, t2, 'b.')
-hold on
-plot(time2,t1new, 'g.', time2, t2new, 'k.')
-
 figure(4)
 plot(time1,t1,'r.', time1, t2, 'b.')
 hold on
