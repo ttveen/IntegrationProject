@@ -112,7 +112,7 @@ figure(4)
 plot(time1,t1,'r.', time1, t2, 'b.')
 hold on
 plot(time2,t1new, 'g.', time2, t2new, 'k.')
-legend({'Heater 1 50%', 'Heater 2 50%', 'Heater 3 2*25%', 'Heater 3 2*25%'},'Location', 'northwest')
+legend({'Heater 1 50%', 'Heater 2 50%', 'Heater 1 2*25%', 'Heater 2 2*25%'},'Location', 'northwest')
 xlabel('Time in s')
 ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
 title('Comparison of input linearity')
