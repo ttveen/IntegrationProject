@@ -1,0 +1,21 @@
+To check if the dynamical system is linear the following condition needs to apply
+$$
+f(t,x,au_a+bu_b) = af(t,x,u_a) + bf(t,x,u_b)
+$$
+By choosing the values 
+$$
+a = b = 1 \text{ and } u_a = u_b = 0.25
+$$
+Two different simulations are obtained
+$$
+f(t,x,0.5) = 2f(t,x,0.25)
+$$
+that need to be performed and compared to each other to check if the above linearity condition apply.
+Figure \ref{fig:LinComp} shows the comparison between the two performed simulations
+
+\begin{figure}[ht]
+    \centering
+    \includesvg[width=0.8\textwidth]{section1/figures/Comparison.svg}
+    \caption{Caption}
+    \label{fig:LinComp}
+\end{figure}
