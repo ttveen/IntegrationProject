@@ -1,11 +1,17 @@
 clear all; close all;
 %% Check how the system behaves in terms of linearity
 
+% Add some paths
+addpath('..\')
+addpath('..\')
+
 % include tclab.m for initialization
 tclab;
 
+
+
 %% First check, input linearity
-% f(t,x,u), f(t,x,u) = f(t,x,0.5*u) + f(t,x,0.5*u);
+%f(t,x,u), f(t,x,u) = f(t,x,0.5*u) + f(t,x,0.5*u);
 
 %Ensure that the state is a certain value:
 x1 = T1C();
@@ -17,16 +23,9 @@ time1 = 0;
 i = 1;
 
 figure(1)
-% plot(time,x1,'r.')
-% hold on;
-% plot(time,x2,'b.')
-
-t = 0:h:endtime;
 
 u = 50;
 
-%t1 = zeros(1,endtime/h);
-%t2 = t1;
 while time1(end) <= endtime
     tic
     %disp("Turn on heaters")
@@ -65,13 +64,6 @@ u = 25;
 time2 = 0;
 i=1;
 figure(2)
-% plot(time,t1wait,'r.')
-% hold on;
-% plot(time,t2wait,'b.')
-
-xlabel('Time in s')
-ylabel('Temperature in $^{\circ}C$C',  'Interpreter', 'Latex')
-title('Input at 25%')
 
 while time2(end) <= endtime
     tic
@@ -127,5 +119,6 @@ title('Comparison of input linearity')
 xlabel('Time in s')
 ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
 title('Comparison of input linearity')
-cd 'Figures/Linearity'
-saveas(gcf,'Figures/Linearity/Comparison','svg')
+cd ..\..
+cd 'Latex/Images/Linearity'
+saveas(gcf,'Comparison','svg')
