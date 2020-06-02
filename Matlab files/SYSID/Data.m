@@ -51,7 +51,9 @@ led(0)
 cd curPath
 cd '../..'
 cd 'Latex/images/SYSID'
-saveas(gcf, 'stepResponse', 'svg');
+stepRes = gcf;
+stepRes.Renderer = 'painters';
+saveas(stepRes, 'stepResponse', 'svg');
 %% Create an input signal
 %Create a block wave
 runtime = 200; %200 second runtime
