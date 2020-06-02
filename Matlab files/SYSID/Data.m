@@ -52,7 +52,6 @@ cd curPath
 cd '../..'
 cd 'Latex/images/SYSID'
 saveas(gcf, 'stepResponse', 'svg');
-saveas(gcf, 'stepResponse')
 %% Create an input signal
 %Create a block wave
 runtime = 200; %200 second runtime
