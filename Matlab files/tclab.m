@@ -54,6 +54,5 @@ function turnOffFunc(a)
 % turn off the heaters by setting both inputs to zero
 writePWMDutyCycle(a,'D3',max(0,min(100,0))*0.9/100); % heater 1
 writePWMDutyCycle(a,'D5',max(0,min(100,0))*0.5/100); % heater 2
-
 disp('The heaters have been turned off');
 end
