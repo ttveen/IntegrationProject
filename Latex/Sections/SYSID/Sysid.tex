@@ -1,0 +1,34 @@
+\subsection{Choice of sampling frequency}
+
+% \begin{figure}[ht]
+%     \centering
+%     \includesvg{Latex/images/SYSID/stepResponse.svg}
+%     \caption{Caption}
+%     \label{fig:my_label}
+% \end{figure}
+
+A good choice of the sampling frequency is necessary to fully capture the system's output.
+A rule of thump is to select the sampling frequency 
+$$
+\omega_S = 10\omega_B
+$$
+where $\omega_B$ is the bandwidth of the system. \\
+
+\noindent The system bandwidth can be estimated by using the following relationship between the bandwidth and rise time of the system's step response.
+$$
+ T = \frac{2\pi}{10\omega_B}
+$$
+where T is the interval between about eight sampled points on the rise time which is approximately sampling at $10\omega_B$. $\omega_B$ can thus be estimated by rewriting the above relationship and substituting $T$. \\
+
+\noindent The results for both heaters can be found in table \ref{Tab:stepInfo}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lllll}
+ & Steady State ($^{\circ}C$) & Rise Time (s) & $\omega_B$ (rad/s) & $\omega_S$ (rad/s) \\ \cline{2-5} 
+Heater 1 & 67.79 & 318 & 0.016 & 0.16 \\
+Heater 2 & 57.04 & 357 & 0.014 & 0.14
+\end{tabular}
+\caption{Step response info}
+\label{Tab:stepInfo}
+\end{table}
