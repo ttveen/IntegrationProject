@@ -48,7 +48,7 @@ hold off
 turnOff(a)
 led(0)
 
-%cd curPath
+cd curPath
 cd '../..'
 cd 'Latex/images/SYSID'
 stepRes = gcf;
@@ -80,7 +80,7 @@ xlabel('Time in s')
 ylabel('Input in percentages')
 title('Input Heater 1')
 hold on
-fig2d = subplot(2,2,4);
+fig2c = subplot(2,2,4);
 xlabel('Time in s')
 ylabel('Input in percentages')
 title('Input Heater 2')
@@ -148,11 +148,11 @@ for i = 1:runtime
     
     plot(fig2c, time.block(end), u1, 'r.')
     
-    plot(fig2d, time.block(end), u2, 'b.')
+    pl
     
     t(i) = toc;
     pause(max(0.01,0.5-t(i)));
-    time.block(end+1) = [time.block(end) + etime(clock,currenttime)];
+    time.step(end+1) = [time.step(end) + etime(clock,currenttime)];
 end
 sgtitle('Response to changing input');
 hold off
@@ -160,7 +160,7 @@ hold off
 turnOff(a)
 led(0)
 
-%cd 'curPath'
+cd curPath
 cd '../..'
 cd 'Latex/images/SYSID'
 stepBlock = gcf;
