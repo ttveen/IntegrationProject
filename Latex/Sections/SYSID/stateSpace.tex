@@ -1,6 +1,6 @@
 \subsection{creating a state space model}
 
-To obtain a state space model of the system described in \ref{} of the form.
+A state space model of the system described in \ref{TSM} is of the form
 $$
 \left[\begin{array}{l}
 \dot{T}_{H 1}^{\prime} \\
@@ -27,36 +27,44 @@ Q_{1}^{\prime} \\
 Q_{2}^{\prime}
 \end{array}\right]
 $$
+$$
+\left[\begin{array}{l}
+T_{C 1}^{\prime} \\
+T_{C 2}^{\prime}
+\end{array}\right]=\left[\begin{array}{llll}
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1
+\end{array}\right]\left[\begin{array}{l}
+T_{H 1}^{\prime} \\
+T_{H 2}^{\prime} \\
+T_{C 1}^{\prime} \\
+T_{C 2}^{\prime}
+\end{array}\right]+\left[\begin{array}{ll}
+0 & 0 \\
+0 & 0
+\end{array}\right]\left[\begin{array}{l}
+Q_{1}^{\prime} \\
+Q_{2}^{\prime}
+\end{array}\right]
+$$
 which can be written as
 \begin{align*}
     \dot{x} &= Ax+Bu \\
     y &= Cx+Du
 \end{align*}
+The indices of the matrices $A$ and $B$ can be estimated by taking the partial derivatives of the right hand side of the differential equations and evaluating them at a steady state condition. This gives the following non-zero indices\\
+\begin{align*}
+a_{1,1}(\Bar{T}_{H_1}),\ a_{2,2}(\Bar{T}_{H_2}) &= -\frac{U A+4 \epsilon \sigma A \Bar{T}_{H_i}^{3}+U_{s} A_{s}+4 \epsilon \sigma A_{s} \Bar{T}_{H_i}^{3}}{m c_{p}} \\
+a_{1,2}(\Bar{T}_{H_1}),\ a_{2,1}(\Bar{T}_{H_2}) &= \frac{U_{s} A_{s}+4 \epsilon \sigma A_{s} \Bar{T}_{H_i}^{3}}{m c_{p}} \\
+a_{3,1},\ a_{4,2} &= \frac{1}{\tau} \\
+a_{3,3},\ a_{4,4} & = -\frac{1}{\tau} \\
+b_{1,1} &= \frac{\alpha_1}{m C_p} \\
+b_{2,2} &= \frac{\alpha_2}{m C_p}
+\end{align*}
 
-the partial derivatives of the right hand side of the differential equations need to be evaluated at a steady state condition.
-
-where $A = \frac{\partial f}{\partial x}|_\Bar{x}$, $B = \frac{\partial f}{\partial u}|_\Bar{u}$
 
 
 
 
-% $$
-% \left[\begin{array}{l}
-% T_{C 1}^{\prime} \\
-% T_{C 2}^{\prime}
-% \end{array}\right]=\left[\begin{array}{llll}
-% 0 & 0 & 1 & 0 \\
-% 0 & 0 & 0 & 1
-% \end{array}\right]\left[\begin{array}{l}
-% T_{H 1}^{\prime} \\
-% T_{H 2}^{\prime} \\
-% T_{C 1}^{\prime} \\
-% T_{C 2}^{\prime}
-% \end{array}\right]+\left[\begin{array}{ll}
-% 0 & 0 \\
-% 0 & 0
-% \end{array}\right]\left[\begin{array}{l}
-% Q_{1}^{\prime} \\
-% Q_{2}^{\prime}
-% \end{array}\right]
-% $$
+
+
