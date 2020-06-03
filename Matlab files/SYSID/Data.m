@@ -91,42 +91,44 @@ for i = 1:runtime
     currenttime = clock;
     tic
     if time.block < 50
-        u1 = 50;
-        u2 = 0;
+        u1(i) = 50;
+        u2(i) = 0;
         led(1);
         h1(50);
         h2(0);
     elseif time.block < 120
-        u1 = 25;
-        u2 = 50;
+        u1(i) = 25;
+        u2(i) = 50;
         led(1);
         h1(25);
         h2(50)
     elseif time.block < 200
-        u1 = 10;
-        u2 = 40;
+        u1(i) = 10;
+        u2(i) = 40;
         led(1);
         h1(10);
         h2(40);
     elseif time.block < 260
-        u1 = 40;
-        u2 = 40;
+        u1(i) = 40;
+        u2(i) = 40;
         led(1);
         h1(40);
         h2(40);
     elseif time.block < 350
-        u1 = 0;
-        u2 = 0;
+        u1(i) = 0;
+        u2(i) = 0;
         led(1);
         h1(0);
         h2(0);
     elseif time.block < 400
+        u1(i) = 25;
+        u2(i) = 50;
         led(1);
         h1(25);
         h2(50);
     elseif time.block < runtime
-        u1 = 50;
-        u2 = 25;
+        u1(i) = 50;
+        u2(i) = 25;
         led(1);
         h1(50);
         h2(25);
@@ -146,14 +148,16 @@ for i = 1:runtime
     plot(fig2b,time.block(end),t2.block(i),'b.')
 %    legend(fig2b,'Heater 2','Location','northwest')
     
-    plot(fig2c, time.block(end), u1, 'r.')
+    plot(fig2c, time.block(end), u1(i), 'r.')
     
-    plot(fig2d, time.block(end), u2, 'b.')
+    plot(fig2d, time.block(end), u2(i), 'b.')
     
     t(i) = toc;
     pause(max(0.01,0.5-t(i)));
     time.block(end+1) = [time.block(end) + etime(clock,currenttime)];
 end
+
+time.block(end) = [];
 sgtitle('Response to changing input');
 hold off
 
@@ -162,7 +166,8 @@ led(0)
 
 %cd 'curPath'
 cd '../..'
-cd 'Latex/images/SYSID'
+%cd 'Latex/images/SYSID'
 stepBlock = gcf;
 stepBlock.Renderer = 'painters';
-saveas(stepBlock, 'blockResponse', 'svg');
+saveas(stepBlock, 'Latex/images/SYSID/blockResponse', 'svg');
+save('Data/blockResponse.mat', 'time', 't1', 't2', 'stepBlock', 'u1', 'u2')
