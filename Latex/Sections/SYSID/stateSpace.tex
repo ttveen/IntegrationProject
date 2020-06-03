@@ -1,0 +1,61 @@
+\subsection{creating a state space model}
+
+To obtain a state space model of the system described in \ref{} of the form.
+$$
+\left[\begin{array}{l}
+\dot{T}_{H 1}^{\prime} \\
+\dot{T}_{H 2}^{\prime} \\
+\dot{T}_{C 1}^{\prime} \\
+\dot{T}_{C 2}^{\prime}
+\end{array}\right]=\left[\begin{array}{llll}
+a_{1,1} & a_{1,2} & a_{1,3} & a_{1,4} \\
+a_{2,1} & a_{2,2} & a_{2,3} & a_{2,4} \\
+a_{3,1} & a_{3,2} & a_{3,3} & a_{3,4} \\
+a_{4,1} & a_{4,2} & a_{4,3} & a_{4,4}
+\end{array}\right]\left[\begin{array}{l}
+T_{H 1}^{\prime} \\
+T_{H 2}^{\prime} \\
+T_{C 1}^{\prime} \\
+T_{C 2}^{\prime}
+\end{array}\right]+\left[\begin{array}{ll}
+b_{1,1} & b_{1,2} \\
+b_{2,1} & b_{2,2} \\
+b_{3,1} & b_{3,2} \\
+b_{4,1} & b_{4,2}
+\end{array}\right]\left[\begin{array}{l}
+Q_{1}^{\prime} \\
+Q_{2}^{\prime}
+\end{array}\right]
+$$
+
+% \begin{align*}
+%     \dot{x} &= Ax+Bu \\
+%     y &= Cx+Du
+% \end{align*}
+the partial derivatives of the right hand side of the differential equations need to be evaluated at a steady state condition.
+
+where $A = \frac{\partial f}{\partial x}|_\Bar{x}$, $B = \frac{\partial f}{\partial u}|_\Bar{u}$
+
+
+
+
+% $$
+% \left[\begin{array}{l}
+% T_{C 1}^{\prime} \\
+% T_{C 2}^{\prime}
+% \end{array}\right]=\left[\begin{array}{llll}
+% 0 & 0 & 1 & 0 \\
+% 0 & 0 & 0 & 1
+% \end{array}\right]\left[\begin{array}{l}
+% T_{H 1}^{\prime} \\
+% T_{H 2}^{\prime} \\
+% T_{C 1}^{\prime} \\
+% T_{C 2}^{\prime}
+% \end{array}\right]+\left[\begin{array}{ll}
+% 0 & 0 \\
+% 0 & 0
+% \end{array}\right]\left[\begin{array}{l}
+% Q_{1}^{\prime} \\
+% Q_{2}^{\prime}
+% \end{array}\right]
+% $$
