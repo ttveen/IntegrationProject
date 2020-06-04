@@ -56,10 +56,10 @@ stepRes.Renderer = 'painters';
 saveas(stepRes, 'stepResponse', 'svg');
 %% Create an input signal
 %Create a block wave
-runtime = 500; %650 second runtime
+runtime = 650; %650 second runtime
 h = 0.50; %sample time
-t = 0:h:runtime;
-% u1 = 50*square(t,20)/2+1/2; %Duty cycle of 20%
+%t = 0:h:runtim
+e;% u1 = 50*square(t,20)/2+1/2; %Duty cycle of 20%
 % u2 = -u1
 %plot(t,u)
 time.block = 0;
@@ -85,7 +85,12 @@ xlabel('Time in s')
 ylabel('Input in percentages')
 title('Input Heater 2')
 hold on
-
+u1 = zeros(1,runtime);
+u2 = zeros(1,runtime);
+time.block = zeros(1,runtime);
+t = zeros(1,runtime);
+t1.block = zeros(1,runtime);
+t2.block = zeros(1,runtime);
 %Measure the corresponding output
 for i = 1:runtime
     currenttime = clock;
@@ -160,7 +165,7 @@ for i = 1:runtime
     
     t(i) = toc;
     pause(max(0.01,1-t(i)));
-    time.block(end+1) = [time.block(end) + etime(clock,currenttime)];
+    time.block(end+1) = time.block(end) + etime(clock,currenttime);
 end
 
 time.block(end) = [];
@@ -175,5 +180,78 @@ cd '../..'
 %cd 'Latex/images/SYSID'
 stepBlock = gcf;
 stepBlock.Renderer = 'painters';
-saveas(stepBlock, 'Latex/images/SYSID/blockResponse', 'svg');
+saveas(stepBlock, 'Latex/images/SYSID/blockResponse2', 'svg');
 save('Data/blockResponse2.mat', 'time', 't1', 't2', 'stepBlock', 'u1', 'u2')
+%% MUCH DATA
+%% Create an input signal
+%Create a block wave
+runtime = 2*60*60; %2 hour runtime
+interval = 100;
+intervals = runtime/interval;
+time.long = 0;
+
+%Create input
+u1 = zeros(1,runtime);
+u2 = zeros(1,runtime);
+for i = 0:interval
+    u1(interval*i+1:interval*(i+1)) = 50*rand(1,1);
+    u2(interval*i+1:interval*(i+1)) = 50*rand(1,1);
+end
+figure('Name','Inputs')
+plot(u1); hold on; plot(u2)
+%%
+figure('Name','Block wave Response, long experiment')
+fig3a = subplot(2,1,1);
+hold on
+xlabel('Time in s')
+ylabel('Temperature in /degC',  'Interpreter', 'Latex')
+title('Temperature')
+fig3b = subplot(2,1,2);
+xlabel('Time in s')
+ylabel('Input level',  'Interpreter', 'Latex')
+title('Input')
+hold on
+
+
+
+t1.long = zeros(1,runtime);
+t2.long = zeros(1,runtime);
+t = zeros(1,runtime);
+time.long = zeros(1,runtime);
+%Measure the corresponding output
+for i = 1:runtime
+    currenttime = clock;
+    tic
+    h1(u1(i));
+    h2(u2(i));
+    t1.long(i) = T1C();
+    t2.long(i) = T2C();
+    
+%     plot(fig3a,time.long(end),t1.long(i),'r.')
+%     plot(fig3a,time.long(end),t2.long(i),'b.')
+%     legend(fig3a,{'Heater 1','Heater 2'},'Location','northwest')
+%     
+%     plot(fig3b, time.long(end), u1(i), 'r.')
+%     plot(fig3b, time.long(end), u2(i), 'b.')
+%     legend(fig3b,{'Input 1', 'Input 2'},'Location','northwest')
+    
+    t(i) = toc;
+    pause(max(0.01,1-t(i)));
+    time.long(end+1) = [time.long(end) + etime(clock,currenttime)];
+end
+
+
+time.long(end) = [];
+sgtitle('Response to changing input');
+hold off
+
+turnOff(a)
+led(0)
+
+%cd 'curPath'
+cd '../..'
+%cd 'Latex/images/SYSID'
+stepBlock = gcf;
+stepBlock.Renderer = 'painters';
+saveas(stepBlock, 'Latex/images/SYSID/blockResponse4', 'svg');
+save('Data/blockResponse4.mat', 'time', 't1', 't2', 'stepBlock', 'u1', 'u2')
