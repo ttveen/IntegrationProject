@@ -4,35 +4,25 @@ addpath('..\')
 addpath('..\')
 
 % Include tclab.m for initialization
-tclab;
+%tclab;
 
 % Load date
+cd '..\..'
 load('Data\blockResponse.mat');
-%time.block(end) = [];
-%Input corresponding to the data
-u = zeros(2,length(time.block));
-u(1,1:50) = 50;
-u(2,1:50) = 0;
-u(1,51:120) = 25;
-u(2,51:120) = 50;
-u(1,121:200) = 10;
-u(2,121:200) = 40;
-u(:,201:260) = 40;
-u(:,261:350) = 0;
-u(1,351:400) = 25;
-u(2,351:400) = 50;
-u(1,401:end) = 50;
-u(2,401:end) = 25;
+
+%Input/output corresponding to the data
+u = [u1;u2];
+y = [t1.block',t2.block'];
 %%
 emissivity = 0.9;
 sigma = 5.67e-8;
-Tinf = 23+273;
+Tinf = 23+273.15;
 Cp = 500;
 mass = 4e-3;
 As = 2e-4;
-A = 1e-3;
+A_par = 1e-3;
 
-
+T0 = Tinf; %Linearisation Temperature
 
 %States and their derivative
 syms TH1 TH2 TC1 TC2 'real'
@@ -45,11 +35,11 @@ syms Q1 Q2 'real'
 syms U  Us alpha1 alpha2 tau 'real'
 theta = [U; Us; alpha1; alpha2; tau];
 QC12 = Us*As*(TH2-TH1);
-QR12 = emissivity*sigma*(TH2^4 - TH1^4);
+QR12 = emissivity*sigma*As*(TH2^4 - TH1^4);
 
 %Dynamics
-TH1d = (U*A*(Tinf-TH1) + emissivity*sigma*A*(Tinf^4 - TH1^4) + QC12 + QR12 + alpha1*Q1)/(mass*Cp);
-TH2d = (U*A*(Tinf-TH2) + emissivity*sigma*A*(Tinf^4 - TH2^4) - QC12 - QR12 + alpha2*Q2)/(mass*Cp);
+TH1d = (U*A_par*(Tinf-TH1) + emissivity*sigma*A_par*(Tinf^4 - TH1^4) + QC12 + QR12 + alpha1*Q1)/(mass*Cp);
+TH2d = (U*A_par*(Tinf-TH2) + emissivity*sigma*A_par*(Tinf^4 - TH2^4) - QC12 - QR12 + alpha2*Q2)/(mass*Cp);
 TC1d = (TH1 - TC1)/tau;
 TC2d = (TH2 - TC2)/tau;
 
@@ -61,6 +51,7 @@ input = [Q1; Q2];
 %Linearise to get the state space model
 A = jacobian(xd, x);
 B = jacobian(xd, input);
+A = subs(A,[TH1; TH2],[T0; T0]); %Linearisation around T0
 C = [0, 0, 1, 0; 0, 0, 0, 1]; %C matrix is known; state 3 and 4 are measured
 D = zeros(2,2);
 
@@ -70,28 +61,53 @@ D = zeros(2,2);
 % Us_ = linspace(5,40,p);
 
 
-theta_ = [10, 20, 1, 0.75, 10]';
-A_ = double(subs(A,[theta; TH1; TH2],[theta_; 273+30; 273+30]));
+theta_ = [10, 20, 0.01, 0.005, 10]';
+A_ = double(subs(A,theta,theta_));
 B_ = double(subs(B,theta,theta_));
 
 %Create the state space model
 linsys = ss(A_,B_,C,D);
+
 %Simulate
 time.sim = linspace(0,time.block(end),length(time.block));
 t1.inter = interp1(time.block,t1.block,time.sim);
 t2.inter = interp1(time.block,t2.block,time.sim);
-[yhat,~,xsim] = lsim(linsys,u,time.sim);
+x0 = [0;0;0;0]; %initial state
+[yhat,~,xhat] = lsim(linsys,u,time.sim);
+xhat = xhat';
+%Compute the error vector
+EN = zeros(2*length(y),1);
+for i = 1:length(y)
+    EN(2*i-1:2*i,1) = (y(i,:)-23.15)' - yhat(i,:)';
+end
+%% Compute Psi(theta)
+%To compute Psi(theta), we need to a simulation for every entry of theta
+%Compute the derivatives of the state matrices
+Psi = zeros(2*length(time.sim),length(theta));
+for p = 1:length(theta)
+   %Compute the matrix derivatives
+   A__ = subs(A,[theta(1:p-1); theta(p+1:end)], [theta_(1:p-1); theta_(p+1:end)]);
+   B__ = subs(B,[theta(1:p-1); theta(p+1:end)], [theta_(1:p-1); theta_(p+1:end)]);
+   derivative(p).A = double(subs(diff(A__), theta(p), theta_(p)));
+   derivative(p).B = double(subs(diff(B__), theta(p), theta_(p)));
+   
+   %Compute the simulations
+   X(p).state(:,1) = x0;
+   for i = 1:length(time.sim)
+      X(p).state(:,i+1) = A_*X(p).state(:,i) + derivative(p).A*xhat(:,i) + derivative(p).B*u(:,i) ;
+      dy(p).state(:,i) = C*X(p).state(:,i);
+      
+      %Create Psi(theta)
+      Psi(2*i-1:2*i,p) = dy(p).state(:,i);
+   end
+end
+Jd = 2/length(time.sim)*Psi'*EN;
+H = 2/length(time.sim) * (Psi'*Psi);
+theta_est(:,1) = theta_;
+for i = 1:10
+    theta_est(:,i+1) = theta_est(:,i) - inv(H)*Jd;
+end
 
-% %Cost function
-% %Set up phi for very timestep:
-% A_power(1).A = eye(size(A));
-% for i = 1 : length(time.block)
-%     sum = zeros(2,4);
-%     if i > 1
-%         for j = 0: i-1
-%             sum = sum + kron(u(:,i)',C*A_power(i-1-j).A);
-%         end
-%     end
-%     phi(i).mat = [C*A_power(i).A, sum, kron(u(:,i)',eye(2))]; 
-%     A_power(i+1).A = A*A_power(i).A;
-% end
+
+
+
