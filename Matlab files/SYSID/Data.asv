@@ -175,5 +175,5 @@ cd '../..'
 %cd 'Latex/images/SYSID'
 stepBlock = gcf;
 stepBlock.Renderer = 'painters';
-saveas(stepBlock, 'Latex/images/SYSID/blockResponse2', 'svg');
+saveas(stepBlock, 'Latex/images/SYSID/blockResponse', 'svg');
 save('Data/blockResponse2.mat', 'time', 't1', 't2', 'stepBlock', 'u1', 'u2')
