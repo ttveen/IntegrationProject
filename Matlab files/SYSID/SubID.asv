@@ -21,8 +21,8 @@ u = [u1; u2];
 % Hankel matrix parameters
 Ly = size(y,1);
 Lu = size(u,1);
-s = 60;
-n = 6;
+s = 100;
+n = 63;
 N = size(y,2) - 2*s + 1;
 
 % Hankel matrices
@@ -123,7 +123,7 @@ figure(stepBlock)
 subplot(2,2,1)
 hold on
 plot(time.block,ys(1,:),'k','LineWidth',2)
-legend('y1_sub')
+legend('')
 hold off
 subplot(2,2,2)
 hold on
