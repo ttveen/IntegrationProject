@@ -7,21 +7,22 @@ Subspace identification methods can be used to retrieve subspaces that are relat
 \end{align}
 
 \subsubsection{MOESP}
-The MOESP method uses RQ factorization to find the matrix $R_{22}$ which has the same column space as the extended observability matrix $\mathcal{O}_s$. 
-$$
-\left[\begin{array}{c}
-U_{0, s, N} \\
-Y_{0, s, N}
-\end{array}\right]=\left[\begin{array}{ccc}
-R_{11} & 0 & 0 \\
-R_{21} & R_{22} & 0
-\end{array}\right]\left[\begin{array}{c}
-Q_{1} \\
-Q_{2} \\
-Q_{3}
-\end{array}\right]
-$$
-where $U_{0,s,N}$ and $Y_{0,s,N}$ are block Hankel matrices constructed from the inputs and outputs respectively which are definded as follows
+The MOESP method uses RQ factorization to find the matrix $R_{22}$ \ref{eq:RQ} which has the same column space as the extended observability matrix $\mathcal{O}_s$. Prove of which can be found in \cite[p.~304--305]{FilteringIdentification}.
+\begin{equation}
+    \left[\begin{array}{c}
+        U_{0, s, N} \\
+        Y_{0, s, N}
+    \end{array}\right]=\left[\begin{array}{ccc}
+        R_{11} & 0 & 0 \\
+        R_{21} & R_{22} & 0
+    \end{array}\right]\left[\begin{array}{c}
+        Q_{1} \\
+        Q_{2} \\
+        Q_{3}
+    \end{array}\right]
+    \label{eq:RQ}
+\end{equation}
+where $U_{0,s,N}$ and $Y_{0,s,N}$ are block Hankel matrices constructed from the inputs and outputs respectively which are defined as follows
 $$
 H_{i, s, N}=\left[\begin{array}{cccc}
 h(i) & h(i+1) & \dots & h(i+N-1) \\
@@ -30,7 +31,7 @@ h(i+1) & h(i+2) & \dots & h(i+N) \\
 h(i+s-1) & h(i+s) & \dots & h(i+N+s-2)
 \end{array}\right]
 $$
-
+The system matrices $A_T$ and $C_T$ can then be determined 
 
 \subsubsection{Model validation}
 ziet er mooi uit man
