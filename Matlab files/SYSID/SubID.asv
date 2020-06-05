@@ -23,8 +23,8 @@ time = time.long;
 % Hankel matrix parameters
 Ly = size(y,1);
 Lu = size(u,1);
-s = 60;
-n = 7;
+s = 150;
+n = 6;
 N = size(y,2) - 2*s + 1;
 
 % Hankel matrices
@@ -37,9 +37,9 @@ for i = 1:s
     end
 end
 
-figure
-plot(svd(Y0sN),'ro','LineWidth',1);
-set(gca,'YScale','log')
+% figure
+% plot(svd(Y0sN),'ro','LineWidth',1);
+% set(gca,'YScale','log')
 
 %% MOESP method (p312)
 
@@ -95,8 +95,6 @@ Dt = reshape(theta(3*n+1:end),[Ly,Lu]);
 
 toc
 %% Create the system
-sys = ss(At,Bt,Ct,Dt);
-G = tf(sys);
 xs = zeros(n,numel(time));
 
 xs(:,1) = xt0;
@@ -120,7 +118,7 @@ compSubID = figure('Name','SubID Comparison');
 
 subplot(2,1,1)
 xlabel('Time in s')
-ylabel('Temperature in /degC',  'Interpreter', 'Latex')
+ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
 title('Temperature Heater 1')
 hold on
 plot(time,y1,'b.')
@@ -130,7 +128,7 @@ legend({'y_{1,exp}','y_{1,subID}'},'Location','northeast')
 
 subplot(2,1,2)
 xlabel('Time in s')
-ylabel('Temperature in /degC',  'Interpreter', 'Latex')
+ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
 title('Temperature Heater 2')
 hold on
 plot(time,y2,'b.')
@@ -147,12 +145,13 @@ saveas(compSubID, '..\..\Latex\images\SYSID\compSubID', 'svg');
 
 % Singular values
 singularVal = figure('Name','Singular Values Y0sN');
-
+hold on
 xlabel('singular values')
 ylabel('Amplitude')
 title('Singular Values of Y0sN')
 plot(svd(Y0sN),'ro','LineWidth',1);
 set(gca,'YScale','log')
+hold off
 
 % save figure
 singularVal = gcf;
