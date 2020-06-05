@@ -89,7 +89,7 @@ theta = pinv(phi'*phi)*phi'*yv;
 % U1 = Ux(1:1300,1:8);
 % theta = V1/S1*U1'*yv;
 
-xT0 = theta(1:n);
+xt0 = theta(1:n);
 Bt = reshape(theta(n+1:3*n),[n 2]);
 Dt = reshape(theta(3*n+1:end),[Ly,Lu]);
 
@@ -99,34 +99,36 @@ sys = ss(At,Bt,Ct,Dt);
 G = tf(sys);
 xs = zeros(n,numel(time.block));
 
-xs(:,1) = xT0;
+xs(:,1) = xt0;
 for i = 1:numel(time.block)-1
    xs(:,i+1) = At*xs(:,i) + Bt*u(:,i);
 end
 
 ys = Ct*xs+Dt*u;
 
+%% Save system matrices in a struct
+SID.At = At;
+SID.Bt = Bt;
+SID.Ct = Ct;
+SID.Dt = Dt;
+SID.xt0 = xT0;
 
-
+save('..\..\Data\SID.mat','SID');
 %% Plotting
-% figure
-% subplot(1,2,1)
-% plot(time.block,ys)
-% ylim([20 45])
-% 
-% subplot(1,2,2)
-% hold on
-% plot(time.block,y,'.')
-% plot(time.block,ys)
-% hold off
+% Update StepBlock figure
 figure(stepBlock)
 subplot(2,2,1)
 hold on
 plot(time.block,ys(1,:),'k','LineWidth',2)
-legend('y1_sub')
+% legend('y_{1,exp}','y_{1,subID}')
 hold off
 subplot(2,2,2)
 hold on
 plot(time.block,ys(2,:),'k','LineWidth',2)
+% legend('y_{2,exp}','y_{2,subID}')
 hold off
+
+% Singular Values
+
+
 
