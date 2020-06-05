@@ -6,3 +6,5 @@ Since the performance of the identified models differ so much, it is easy to con
     \item The linear least squares approach offers a non-linear model. Subspace identification results in a linear model. One is not necessarily better than the other, since linearising the nonlinear model might result in inaccuracies, further away from the linearisation point. However, a nonlinear model could capture dynamics that a linear model could not. These dynamics can then be controlled and observed by nonlinear controllers and observers.
 \end{itemize}
 Note that the subspace identification also uses linear least sqaures to minimise an error. Some linear least squares is thus used, whatever method is chosen.
+
+One of the possibilities of the subspace method, is to estimate the covariance of the measurement and process noise. This will be exploited in the next chapter, where a kalman filter is designed.

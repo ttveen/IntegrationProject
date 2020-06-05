@@ -1,0 +1,24 @@
+To control a dynamic system, it is important to know the states of the system. In case of the Temperature Control Lab, only two measurements are done. The model obtained in the previous has a higher order, which implies that some states are not measured. The unmeasured states can be estimated using a linear observer. The observer estimates the states using the measured inputs. The estimated states converge to the actual states asymptotically.
+In the presence of either measurement or process noise, a Kalman filter is often used \cite{kalmanFilter}. The Kalman filter is a linear observer that minimises the covariance of the estimation error. The Kalman filter for a LTI system \cite[p.~162]{FilteringIdentification}
+\begin{align*}
+    x(k+1) &= Ax(k) +Bu(k) + w(k)\\
+    y(k) = Cx(k) + Du(k) + v(k)
+\end{align*}
+with $w(k)$ and $v(k)$ zero mean random sequences, with the covariance matrices
+\begin{align*}
+    E(\begin{bmatrix} w(k) \\ v(k) \end{bmatrix} \begin{bmatrix} w(j)^T & v(j)^T \end{bmatrix}) = \begin{bmatrix} Q & S \\ S^T & Q \end{bmatrix} \Delta(k-j)
+\end{align*}
+where $Q$ and $S$ are positive semi-defintie matrices. $R$ is positive definitive. If the pair $(A,C)$ is observable, and $(A,Q^{\frac{1}{2}})$ is reachable, then the Kalman-gain matrix is 
+\begin{align*}
+    K = (S+APC^T)(CPC^T+R)^{-1}
+\end{align*}
+where P is the soluiton to the Ricattie equation
+$$
+    P = APA^T + Q - (S+APC^T)(CPC^T+T)^{-1}(S+APC^T)^T
+$$
+The observer has the following form, where $(A-KC)$ is asymptotically stable
+\begin{align*}
+    \hat{x}(k+1) &= (A-KC)\hat{x} + Bu(k) + Ky(k)\\
+    \hat{y}(k) &= C\hat{x}(k)
+\end{align*}
+\subsection{Covariance estimation}
