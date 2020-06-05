@@ -1,4 +1,4 @@
-\subsubsection{Linear least squares fit}
+\subsection{Linear least squares fit}
 The linear least squares approach can be used to create a model from the input and output data. The aim is to find a model that minimised the difference between the measuremnts, and the predicted measurements for the model. The following least squares problem is proposed:
 \begin{align}
     \displaystyle \min_{x} &||y(k)-\hat{y}(k,x)|| \nonumber \\
@@ -45,3 +45,19 @@ Equations \ref{eq:leastsquares1} and \ref{eq:leastsquares2} can be expanded so t
 \end{align}
 $\hat{x}$ contains the parameters that minimise the error, and thus should give the optimal fit with respect to the cost function \ref{eq:leastsquarescost}.
 
+\subsection{Linear least squares model validation}
+The obtained model, using the least squares method, was fitted to the measurements shown in figure \ref{fig:lsqfit}. The figure also shows the fitted model. For the fit, the following parameters were used: $\alpha_1 = 0.01 \frac{W}{\%}$, $\alpha_2 = 0.0075 \frac{W}{\%}$ and $\tau = 12$. These parameters resulted in least squares solution
+$$
+    \hat{x} = \begin{bmatrix} -2.57 & 0.43 & 1.20 & -0.144 & 19.64\end{bmatrix}^T
+$$
+Figure \ref{fig:lsqfit} shows that the obtained model does not represent the original system. $\hat{x}$ has some unexpected values, such as the negative parameters. This would suggest that the heat flows from cold to hot, which is obviously incorrect. The reason for such an under performing fit might be the the original theoretical model (equations \ref{eq:nonlin1} to \ref{eq:nonlin4}), or limitation in the parameters that can be estimated. It could be that $\tau$ and $\alpha_i$ are very different than was initially assumed, but several different values for these parameters were chosen, without success.
+
+The fitted model does show peaks in the temperatures corresponding to the input, but the temperature does not deviate much from its steady state around $29^{\circ}$. Additionally, the two temperatures of the two sensors appear to track one another closely, while the measurement do not. This implies that the model has more heat transfer between the heaters than necessary. This is represented by the high values for $\hat{x}_3$ and $\hat{x}_4$. $\hat{x}_5$ is close to an expected value, using the parameters from table \ref{tab:theModelPara}, $\frac{1}{mC_p} = 20$.
+
+The obtained nonlinear model was integrated using \textit{Matlab ODE45()} 
+\begin{figure}
+    \centering
+    \includesvg[width = 0.8\textwidth]{images/SYSID/leastSquaresFit.svg}
+    \caption{The measurement and the least squares fit, with the corresponding input}
+    \label{fig:lsqfit}
+\end{figure}

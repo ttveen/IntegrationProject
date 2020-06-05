@@ -1,10 +1,21 @@
 \subsection{Subspace identification using general input sequences}
-Subspace identification methods can be used to retrieve subspaces that are related to the system matrices of the signal generating state-space model \ref{eq:sgs_x},\ref{eq:sgs_y}. This is done by storing the input and output data in structured block Hankel matrices. For the heater system the "Multivariable Output-Error State-Space" (MOESP) method \cite[p.~301--312]{FilteringIdentification} of subspace identification will be used to calculate the column space of the extended observability matrix $\mathcal{O}_s$. Out of which the system matrices will be determined up to a certain similarity transformation. 
+Subspace identification methods can be used to retrieve subspaces that are related to the system matrices of the signal generating state-space model \ref{eq:sgs_x},\ref{eq:sgs_y}. This is done by storing the input and output data in structured block Hankel matrices. For the heater system the "Multivariable Output-Error State-Space" (MOESP) method \cite[p.~301--312]{FilteringIdentification} of subspace identification will be used to calculate the column space of the extended observability matrix $\mathcal{O}_s$ \ref{eq:extendedObservability}. Out of which the system matrices will be determined up to a certain similarity transformation. 
 
 \begin{align}
     x(k+1) &= Ax(k) + Bu(k) \label{eq:sgs_x}\\
     y(k) &= Cx(k) + Du(k) + v(k) \label{eq:sgs_y}
 \end{align}
+
+\begin{equation}
+\mathcal{O}_s = \left[\begin{array}{c}
+C \\
+C A \\
+C A^{2} \\
+\vdots \\
+C A^{s-1}
+\end{array}\right]
+\label{eq:extendedObservability}
+\end{equation}
 
 \subsubsection{MOESP}
 The MOESP method uses RQ factorization to find the matrix $R_{22}$ \ref{eq:RQ} which has the same column space as the extended observability matrix $\mathcal{O}_s$. Prove of which can be found in \cite[p.~304--305]{FilteringIdentification}.
@@ -31,7 +42,46 @@ h(i+1) & h(i+2) & \dots & h(i+N) \\
 h(i+s-1) & h(i+s) & \dots & h(i+N+s-2)
 \end{array}\right]
 $$
-The system matrices $A_T$ and $C_T$ can then be determined b
+The system matrices $A_T$ and $C_T$ can be determined by taking the SVD of the matrix $R_{22}$.
+$$
+R_{22} = U_n\Sigma_nV_n^T
+$$
+$C_T$ equals the first l rows of $U_n$ ($C_t = U_n(1:l,:)$) where l is the amount of outputs of the system.
+$A_T$ is determined by solving the following equation
+$$
+U_n(1:(s-1)l,:)A_T = U_n(l+1:sl,:)
+$$
+To determine the matrices $B_T$ and $D_T$, the following least-squares problem needs to be solved for $\theta$
+$$
+    \min _{\theta} \frac{1}{N} \sum_{k=0}^{N-1}\left\|y(k)-\phi(k)^{\mathrm{T}} \theta\right\|_{2}^{2}
+$$
+where
+$$
+    \phi(k)^{\mathrm{T}}=\left[\widehat{C}_{T} \widehat{A}_{T}^{k} \quad\left(\sum_{\tau=0}^{k-1} u(\tau)^{\mathrm{T}} \otimes \widehat{C}_{T} \widehat{A}_{T}^{k-\tau-1}\right) \quad\left(u(k)^{\mathrm{T}} \otimes I_{\ell}\right)\right]
+$$
+and
+$$
+    \theta=\left[\begin{array}{c}
+    x_{T}(0) \\
+    \operatorname{vec}\left(B_{T}\right) \\
+    \operatorname{vec}\left(D_{T}\right)
+    \end{array}\right]
+$$
+From the vector $\theta$ the matrices $B_T$ and $D_T$ can be constructed. $\theta$ also contains the transformed initial state.
 
 \subsubsection{Model validation}
-ziet er mooi uit man
+% \begin{figure}
+%     \centering
+%     \includesvg{}
+%     \caption{Singular values of Y0sN}
+%     \label{fig:SingularY0sN}
+% \end{figure}
+
+% \begin{figure}
+%     \centering
+%     \includesvg{}
+%     \caption{Comparison between the outputs of the experiment and the system created with subspace identification}
+%     \label{fig:Comp_subID}
+% \end{figure}
+
+From figure \ref{fig:Comp_subID} 
