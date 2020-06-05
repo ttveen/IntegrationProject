@@ -9,7 +9,10 @@ addpath('..\')
 % Load date
 clear all
 close all
-load('..\..\Data\blockResponse2.mat');
+load('..\..\Data\blockResponse5.mat');
+time.block = time.long
+t1.block = t1.long
+t2.block = t2.long
 %%
 
 %Ensure that the time vector is evenly spaced
@@ -37,7 +40,7 @@ lsq.y = zeros(2*(length(time.sim) - 2),1);
 lsq.F = zeros(2*(length(time.sim) - 2),5);
 
 sigma = 5.67e-8;
-tau = 10;
+tau = 15;
 alpha1 = 0.01;
 alpha2 = 0.0075;
 
@@ -56,75 +59,34 @@ for i = 1 : length(time.sim) - 2
     lsq.F(2*i  ,:) = h*[Tinf - (T.H2(i)+T0), sigma*(Tinf^4 - (T.H2(i)+T0)^4), (T.H1(i)+T0) - (T.H2(i)+T0), sigma*((T.H1(i)+T0)^4 - (T.H2(i)+T0)^4), alpha2*u2(i)];
 end
 lsq.x = (lsq.F'*lsq.F)\(lsq.F'*lsq.y);
-%%
-load('..\..\Data\blockResponse.mat');
-%Ensure that the time vector is evenly spaced
-time.h1 = linspace(0,325,326);
-time.sim = linspace(0,time.block(end),length(time.h1));
-t1.inter2 = interp1(time.block,t1.block,time.h1);
-t2.inter2 = interp1(time.block,t2.block,time.h1);
-u1 = interp1(time.block,u1,time.h1);
-u2 = interp1(time.block,u2,time.h1);
-h = time.h1(2) - time.h1(1); %Time step
 
-%Input/output corresponding to the data
-u = [u1;u2];
-y = [t1.inter2',t2.inter2'];
-%
-T0 = 273.15;
-sigma = 5.67e-8;
-tau = 23;
-alpha1 = 0.01;
-alpha2 = 0.0075;
-SimTime = 326;
-Ta = 273+23;
-Temperature = zeros(SimTime,3);
-Temperature(:,2) = y(:,1);
-Temperature(:,3) = y(:,2);
-y1 = zeros(SimTime-2,1);
-y2 = zeros(SimTime-2,1);
-y = zeros(2*(SimTime-2),1);
-F1 = zeros(SimTime-2,5);
-F2 = zeros(SimTime-2,5);
-for i= 1:SimTime-2
-    y1(i) = tau*Temperature(i+2,2)-(tau-1)*Temperature(i+1,2)-(tau*Temperature(i+1,2)-(tau-1)*Temperature(i,2));
-    y2(i) = tau*Temperature(i+2,3)-(tau-1)*Temperature(i+1,3)-(tau*Temperature(i+1,3)-(tau-1)*Temperature(i,3));
-    %y(2*i-1:2*i) = [y1(i);y2(i)];
-    F1(i,:) = [Ta-(tau*(Temperature(i+1,2)+T0)-(tau-1)*(Temperature(i,2)+T0)) sigma*(Ta^4-(tau*(Temperature(i+1,2)+T0)-(tau-1)*(Temperature(i,2)+T0))^4) ...
-        (tau*(Temperature(i+1,3)+T0)-(tau-1)*(Temperature(i,3)+T0))-(tau*(Temperature(i+1,2)+T0)-(tau-1)*(Temperature(i,2)+T0)) sigma*((tau*(Temperature(i+1,3)+T0)-(tau-1)*(Temperature(i,3)+T0))^4 - (tau*(Temperature(i+1,2)+T0)-(tau-1)*(Temperature(i,2)+T0))^4) ...
-        alpha1*u1(i)];
-    F2(i,:) = [Ta-(tau*(Temperature(i+1,3)+T0)-(tau-1)*(Temperature(i,3)+T0)) sigma*(Ta^4-(tau*(Temperature(i+1,3)+T0)-(tau-1)*(Temperature(i,3)+T0))^4) ...
-        (tau*(Temperature(i+1,2)+T0)-(tau-1)*(Temperature(i,2)+T0))-(tau*(Temperature(i+1,3)+T0)-(tau-1)*(Temperature(i,3)+T0)) sigma*((tau*(Temperature(i+1,2)+T0)-(tau-1)*(Temperature(i,2)+T0))^4 - (tau*(Temperature(i+1,3)+T0)-(tau-1)*(Temperature(i,3)+T0))^4) ...
-        alpha2*u2(i)];
-end
-y = [y1;y2];
-F = [F1;F2];
-lsq.x = inv(F'*F)*F'*y;
-%%
-lsq.x= [5.53*0.001/0.5; 0.9*0.001/0.5; 24.44*0.0002/0.5; 0.9*0.0002/0.5; 1/0.05];
 %% Compute the model
 Tinf = 273.15+23;
-TC1 = [298];
-TC2 = [298];
-f.y = [298;298;298;298];
+TC1 = [20+273.15];
+TC2 = [20+273.15];
+f.y = [20;20;20;20]+ 273.15;
 t = 0;
 for i = 1: length(time.sim)
-   f = ode45(@(t,x)heaters(t,x,u1(i),u2(i),lsq),[0 h],f.y(:,end));
+   f = ode45(@(t,x)heaters(t,x,u1(i),u2(i),lsq, alpha1, alpha2, tau),[0 h],f.y(:,end));
    TC1 = [TC1, f.y(3,2:end)];
    TC2 = [TC2, f.y(4,2:end)];
    %t = [t, f.x(2:end)];
 end
 TC1 = TC1 - 273.15;
 TC2 = TC2 - 273.15;
-figure()
-plot(TC1)
+t = linspace(0,time.block(end), length(TC1));
+figure(stepBlock)
+subplot(2,1,1)
 hold on
-plot(TC2)
-function dx = heaters(t,x,u1,u2,lsq)
+plot(t,TC1)
+plot(t,TC2)
+legend({'Heater 1', 'Heater 2','H1, lsq fit','H1, lsq fit'},'Location','northeast')
+saveas(stepBlock,'..\..\latex\images\SYSID\leastSquaresFit','svg')
+function dx = heaters(t,x,u1,u2,lsq, alpha1, alpha2, tau)
     sigma = 5.67e-8;
-    tau = 23.16;
-    alpha1 = 0.01;
-    alpha2 = 0.0075;
+    %tau = 23;
+    %alpha1 = 0.01;
+    %alpha2 = 0.0075;
     T0 = 273.15; %Celsius to kelvin
     Tinf = T0 + 23; %Ambient temperature
 
