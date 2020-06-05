@@ -220,6 +220,7 @@ t = zeros(1,runtime);
 time.long = zeros(1,runtime);
 %Measure the corresponding output
 led(1);
+try
 for i = 1:runtime
     currenttime = clock;
     tic
@@ -227,26 +228,37 @@ for i = 1:runtime
     h2(u2(i));
     t1.long(i) = T1C();
     t2.long(i) = T2C();
-   
+    if mod(i,100) == 0
+       disp(t(i))
+       disp(time.long(i))
+       disp(getTemp())
+    end
     t(i) = toc;
     pause(max(0.01,1-t(i)));
-    time.long(i+1) = [time.long(i) + etime(clock,currenttime)];
+    time.long(i+1) = time.long(i) + etime(clock,currenttime);
 end
+catch
+    disp('error')
+   turnOff(a)
+   led(0)
+end
+turnOff(a)
+led(0)
+
 time.long(end) = [];
 plot(fig3a,time.long,t1.long,'r.')
 plot(fig3a,time.long,t2.long,'b.')
 legend(fig3a,{'Heater 1','Heater 2'},'Location','northwest')
 
-plot(fig3b, time.long, u1, 'r.')
-plot(fig3b, time.long, u2, 'b.')
+plot(fig3b, time.long, u1(1:length(time.long)), 'r.')
+plot(fig3b, time.long, u2(1:length(time.long)), 'b.')
 legend(fig3b,{'Input 1', 'Input 2'},'Location','northwest')
 
 
 sgtitle('Response to changing input');
 hold off
 
-turnOff(a)
-led(0)
+
 
 %cd 'curPath'
 cd '../..'
