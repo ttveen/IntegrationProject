@@ -1,0 +1,47 @@
+\subsubsection{Linear least squares fit}
+The linear least squares approach can be used to create a model from the input and output data. The aim is to find a model that minimised the difference between the measuremnts, and the predicted measurements for the model. The following least squares problem is proposed:
+\begin{align}
+    \displaystyle \min_{x} &||y(k)-\hat{y}(k,x)|| \nonumber \\
+    \displaystyle \min_{x} &||y(k)-F(k)x||\label{eq:leastsquarescost}
+\end{align}
+
+
+where $x$ denotes the unknown parameters, $y(k)$ the measurements, and $\hat{y}(k,x)$ the predicted measurements. For the predicted measurements, the non-linear theoretical model (equations \ref{eq:nonlin1} to \ref{eq:nonlin4}) are used. These equations are linear in the following parameters:
+$$
+x = \begin{bmatrix}
+\frac{UA}{mC_p} & \frac{\epsilon A}{mC_p} & \frac{U_sA_s}{mC_p} & \frac{\epsilon A_s}{mC_p} & \frac{1}{mC_p}
+\end{bmatrix}^T
+$$
+This property can be exploited to formulate the $\hat{y}(k,x)$ as linear function in terms of the unkown parameters. Note that the parameters $\tau$ and $\alpha_i$ cannot be extracted from the matrix $F(k)$ into $x$. This means that those parameters cannot be determined by the linear least squares method.
+First $T_{Hi}(k)$ is rewritten in terms of the measurements $T_{Ci}(k)$. From equations \ref{eq:nonlin3} and \ref{eq:nonlin4}
+\begin{align*}
+    T_{Ci}(k+h) &= T_{Ci}(k) + \frac{h}{tau}(T_{Hi}(k) - T_{Ci}(k)\\
+    T_{Hi}(k) &= \frac{\tau}{h}(T_{Ci}(k+h) - T_{Ci}(k)) + T_{Ci}(k)\\
+    T_{Hi}(k) &= \frac{\tau}{h}(T_{Ci}(k+h)) + (1-\frac{\tau}{h})T_{Ci}(k)
+\end{align*}
+\begin{equation}
+    T_{Hi}(k+h) - T_{Hi}(k) = \underbrace{\frac{\tau}{h}[T_{Ci}(k+2h)] + (1-\frac{\tau}{h})T_{Ci}(k+h) - \frac{\tau}{h}[T_{Ci}(k+h)] + (1-\frac{\tau}{h})T_{Ci}(k)}_{y(k)} \label{eq:leastsquares1}
+\end{equation}
+Then, $T_{Hi}(k+h)$ can be rewritten in term of the prediction, using equations \ref{eq:nonlin1} and \ref{eq:nonlin2}
+\begin{align*}
+    T_{Hi}(k+h) = T_{Hi}(k) + h\dot{T}_{Hi}\\
+    \begin{bmatrix}
+        T_{H1}(k+h) - T_{H1}(k) \\
+        T_{H2}(k+h) - T_{H2}(k)
+    \end{bmatrix} = 
+\end{align*}
+\begin{equation}
+        \underbrace{h\begin{bmatrix}
+        T_{\infty} - T_{H1}(k) & \sigma[T_{\infty}^4 - T_{H1}(k)^4] & T_{H2}(k) - T_{H1}(k) & \sigma[T_{H2}^4(k) - T_{H1}^4(k)] & \alpha_1 u_1(k)\\
+        T_{\infty} - T_{H2}(k) & \sigma[T_{\infty}^4 - T_{H2}(k)^4] & -T_{H2}(k) - T_{H1}(k) & -\sigma[T_{H2}^4(k) - T_{H1}^4(k)] & \alpha_1 u_1(k)       
+    \end{bmatrix}}_{F(k)}
+    \begin{bmatrix}
+    \frac{UA}{mC_p} \\ \frac{\epsilon A}{mC_p} \\ \frac{U_sA_s}{mC_p} \\ \frac{\epsilon A_s}{mC_p} \\ \frac{1}{mC_p} \label{eq:leastsquares2}
+    \end{bmatrix}
+\end{equation}
+Equations \ref{eq:leastsquares1} and \ref{eq:leastsquares2} can be expanded so that there are two equations for every measurement at time $k$. For $N$ number of measurements, there are $2(N-2)$ equations. The solution of the least squares problem is \cite[p.~28--32]{FilteringIdentification}
+\begin{align}
+    \hat{x} = (F^TF)^{-1}F^Ty
+\end{align}
+$\hat{x}$ contains the parameters that minimise the error, and thus should give the optimal fit with respect to the cost function \ref{eq:leastsquarescost}.
+

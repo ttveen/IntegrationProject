@@ -9,7 +9,7 @@ addpath('..\')
 % Load date
 clear all
 close all
-load('..\..\Data\blockResponse.mat');
+load('..\..\Data\blockResponse2.mat');
 %%
 
 %Ensure that the time vector is evenly spaced
