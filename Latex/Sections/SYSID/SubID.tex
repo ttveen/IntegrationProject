@@ -70,6 +70,12 @@ $$
 $$
 From the vector $\theta$ the matrices $B_T$ and $D_T$ can be constructed. $\theta$ also contains the transformed initial state.
 
+\begin{figure}[ht]
+    \centering
+    \includesvg[width=0.8\textwidth]{images/SYSID/singularVal.svg}
+    \caption{Singular values of Y0sN}
+    \label{fig:SingularY0sN}
+\end{figure}
 
 \subsubsection{Results}
 
@@ -82,16 +88,9 @@ From the vector $\theta$ the matrices $B_T$ and $D_T$ can be constructed. $\thet
 
 \begin{figure}[ht]
     \centering
-    \includesvg[width=0.8\textwidth]{images/SYSID/singularVal.svg}
-    \caption{Singular values of Y0sN}
-    \label{fig:SingularY0sN}
-\end{figure}
-
-\begin{figure}[t]
-    \centering
     \includesvg[width=0.8\textwidth]{images/SYSID/compSubID.svg}
     \caption{Comparison between the outputs of the experiment and the system created with subspace identification}
     \label{fig:Comp_subID}
 \end{figure}
 
-From figure \ref{fig:Comp_subID} it can be seen that the model determined with MOESP, given the same input, mostly coincides with the experiment data. He   
+From figure \ref{fig:Comp_subID} it can be seen that the model determined with MOESP, given the same input, mostly coincides with the experiment data. It is even able to match well with the output of Heater 2 which has, as seen in the figure, more measurement noise than Heater 1.  
