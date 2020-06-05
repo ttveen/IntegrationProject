@@ -22,4 +22,30 @@ The observer has the following form, where $(A-KC)$ is asymptotically stable
     \hat{y}(k) &= C\hat{x}(k)
 \end{align*}
 \subsection{Covariance estimation}
-To design a the kalmain filter, the covariance matrices $Q$, $S$ and $R$ need to be determined. The subspace identification method can be used to get an estimate for these covariance matrices, the so called N4SID subspace method \cite{VANOVERSCHEE199475}.
+To design a the kalmain filter, the covariance matrices $Q$, $S$ and $R$ need to be determined. The subspace identification method can be used to get an estimate for these covariance matrices, the so called N4SID subspace method \cite{VANOVERSCHEE199475}. This method approximates the state sequence $X_{s,N}$ of a Kalman filter. An estimate of the row space $\hat{X}_{s,N}$ of this state sequence can be computed using the RQ factorisation and a singular value decomposition
+\begin{align*}
+    \begin{bmatrix} U_{s,s,N} \\ \begin{bmatrix} U_{0,s,N} \\ Y_{0,s,N}\end{bmatrix} \\ Y_{s,s,N} \end{bmatrix} = \begin{bmatrix} R_{11} & 0 & 0 \\ R_{21} & R_{22} & 0 \\ R_{31} & R_{32} & R_{33}\end{bmatrix}\begin{bmatrix} Q_1 \\ Q_2 \\ Q_3 \end{bmatrix}
+\end{align*}
+The estimate of the row space is then, using the singular value decomposition
+\begin{align*}
+    R_{32}R_{22}^{-1} \begin{bmatrix} U_{0,s,N} \\ Y_{0,s,N}\end{bmatrix} = U_n\Sigma_nV_n
+    \hat{X}_s,N = \Sigma_n^{1/2}V_n^T
+\end{align*}
+where $n$ denotes the order of the model. The state matrices can be estimated using linear least squares
+$$
+\min _{A_{T}, B_{T}, C_{T}, D_{T}} \|\left[\begin{array}{c}
+\widehat{X}_{s+1, N} \\
+Y_{s, 1, N-1}
+\end{array}\right]-\left[\begin{array}{cc}
+A_{T} & B_{T} \\
+C_{T} & D_{T}
+\end{array}\right]\left[\begin{array}{c}
+\widehat{X}_{s, N-1} \\
+U_{s, 1, N-1}
+\end{array}\right]||_{\mathrm{F}}^{2}
+$$
+which results in the estmated system $\hat{A}$, $\hat{B}$, $\hat{C}$ and $\hat{D}$. The residuals can be used to compute the covariance matrices \cite[p.~333]{FilteringIdentification}.
+\begin{align*}
+    \begin{bmatrix} \hat{W}_{s,1,N-1} \\ \hat{V}_{s,1,N-1} \end{bmatrix} &= \begin{bmatrix} \hat{X}_{s+1,N} \\ \hat{Y}_{s,1,N-1} \end{bmatrix} - \begin{bmatrix} \hat{A} & \hat{B}\\ \hat{C} & \hat{D} \end{bmatrix} \begin{bmatrix} \hat{X}_{s,N-1} \\ \hat{U}_{s,1,N-1} \end{bmatrix} \\
+    \begin{bmatrix} \hat{Q} & \hat{A}\\ \hat{S}^T & \hat{R} \end{bmatrix} &= \lim_{N \xrightarrow{}\infty} \frac{1}{N} \begin{bmatrix} \hat{W}_{s,1,N} \\ \hat{V}_{s,1,N} \end{bmatrix} \begin{bmatrix} \hat{W}_{s,1,N}^T & \hat{V}_{s,1,N}^T \end{bmatrix}
+\end{align*}
