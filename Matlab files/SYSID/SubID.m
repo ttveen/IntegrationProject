@@ -147,14 +147,16 @@ saveas(compSubID, '..\..\Latex\images\SYSID\compSubID', 'svg');
 
 % Singular values
 singularVal = figure('Name','Singular Values Y0sN');
-
+hold on
 xlabel('singular values')
 ylabel('Amplitude')
 title('Singular Values of Y0sN')
 plot(svd(Y0sN),'ro','LineWidth',1);
 set(gca,'YScale','log')
+hold off
 
 % save figure
+cd '..\..'
 singularVal = gcf;
 singularVal.Renderer = 'painters';
 saveas(singularVal, '..\..\Latex\images\SYSID\singularVal', 'svg');
