@@ -46,7 +46,8 @@ The system matrices $A_T$ and $C_T$ can be determined by taking the SVD of the m
 $$
 R_{22} = U_n\Sigma_nV_n^T
 $$
-$C_T$ equals the first l rows of $U_n$ ($C_t = U_n(1:l,:)$) where l is the amount of outputs of the system.
+where n is the rank of the system which can be estimated by determining the amount of distinct singular values of $Y_{0,s,N}$ \ref{fig:SingularY0sN} which was found to be $n\aprox7$.  
+$C_T$ then equals the first $l$ rows of $U_n$ ($C_t = U_n(1:l,:)$) where l is the amount of outputs of the system.
 $A_T$ is determined by solving the following equation
 $$
 U_n(1:(s-1)l,:)A_T = U_n(l+1:sl,:)
@@ -70,17 +71,21 @@ $$
 From the vector $\theta$ the matrices $B_T$ and $D_T$ can be constructed. $\theta$ also contains the transformed initial state.
 
 
-
 \subsubsection{Results}
 
-The system matrices determined with the MOESP method 
+% The system matrices determined with the MOESP method ($n=7,\ s=150$) are
+% A_T
+% B_T
+% C_T
+% D_T
+%?
 
-% \begin{figure}[ht]
-%     \centering
-%     \includesvg[width=0.8\textwidth]{images/SYSID/singularVal.svg}
-%     \caption{Singular values of Y0sN}
-%     \label{fig:SingularY0sN}
-% \end{figure}
+\begin{figure}[ht]
+    \centering
+    \includesvg[width=0.8\textwidth]{images/SYSID/singularVal.svg}
+    \caption{Singular values of Y0sN}
+    \label{fig:SingularY0sN}
+\end{figure}
 
 \begin{figure}[t]
     \centering
@@ -89,4 +94,4 @@ The system matrices determined with the MOESP method
     \label{fig:Comp_subID}
 \end{figure}
 
-From figure \ref{fig:Comp_subID} 
+From figure \ref{fig:Comp_subID} it can be seen that the model determined with MOESP, given the same input, mostly coincides with the experiment data. He   
