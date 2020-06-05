@@ -97,7 +97,7 @@ hold on
 plot(time2,t2new,'b.')
 legend('Heater 1', 'Heater 2')
 xlabel('Time in s')
-ylabel('Temperature in /degC',  'Interpreter', 'Latex')
+ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
 title('Input at 25, doubled%')
 
 figure(4)

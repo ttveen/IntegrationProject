@@ -12,11 +12,11 @@ runtime = 650; %650 second runtime
 figure('Name','Step Response')
 fig1a = subplot(2,1,1);
 hold on
-ylabel('Temperature in /degC',  'Interpreter', 'Latex')
+ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
 title('Heater 1')
 fig1b = subplot(2,1,2);
 xlabel('Time in s')
-ylabel('Temperature in /degC',  'Interpreter', 'Latex')
+ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
 title('Heater 2')
 hold on
 
@@ -68,11 +68,11 @@ figure('Name','Bock wave Response')
 fig2a = subplot(2,2,1);
 hold on
 xlabel('Time in s')
-ylabel('Temperature in /degC',  'Interpreter', 'Latex')
+ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
 title('Heater 1')
 fig2b = subplot(2,2,2);
 xlabel('Time in s')
-ylabel('Temperature in /degC',  'Interpreter', 'Latex')
+ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
 title('Heater 2')
 hold on
 fig2c = subplot(2,2,3);
@@ -204,7 +204,7 @@ figure('Name','Block wave Response, long experiment')
 fig3a = subplot(2,1,1);
 hold on
 xlabel('Time in s')
-ylabel('Temperature in /degC',  'Interpreter', 'Latex')
+ylabel('Temperature in ^$\{circ}C$',  'Interpreter', 'Latex')
 title('Temperature')
 fig3b = subplot(2,1,2);
 xlabel('Time in s')
