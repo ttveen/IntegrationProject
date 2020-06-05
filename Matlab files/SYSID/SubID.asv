@@ -5,24 +5,26 @@ clear; clc; close all
 
 %% Load and initialise experiment data
 %load experiment data
-load('..\..\Data\blockResponse2.mat');
+load('..\..\Data\blockResponse5.mat');
 
 % init output
-y1 = t1.block;
-y2 = t2.block;
+y1 = t1.long;
+y2 = t2.long;
 y = [y1; y2];
 
 % init input
 u = [u1; u2];
 
+% init time
+time = time.long;
 
 %% create Hankel matrices
 
 % Hankel matrix parameters
 Ly = size(y,1);
 Lu = size(u,1);
-s = 100;
-n = 63;
+s = 60;
+n = 7;
 N = size(y,2) - 2*s + 1;
 
 % Hankel matrices
@@ -57,7 +59,26 @@ Ct = Un(1:Ly,:);
 At = Un(1:(s-1)*Ly,:)\Un(Ly+1:s*Ly,:);
 
 % Determine Bt and Dt
-% Phi = zeros(size(y,2),2*n+Lu);
+tic
+% phi_1 = zeros(Ly*size(y,2),n);
+% phi_2 = zeros(Ly*size(y,2),2*n);
+% phi_3 = zeros(Ly*size(y,2),2*Ly);
+% Atk = At^0;
+% for k = 0:size(y,2)-1
+%    phi_1(Ly*k+1:Ly*k+Ly,:) = Ct*Atk;
+%    Atk = Atk * At;
+%    
+%    phi_sum = zeros(Ly,2*n);
+%    Atk2 = At^0;
+%    for tau=0:k-1
+%       phi_sum = phi_sum + [u(1,tau+1).*Ct*Atk2, u(2,tau+1).*Ct*Atk2] ;
+%       Atk2 = Atk2*At;
+%    end
+%    phi_2(Ly*k+1:Ly*k+Ly,:) = phi_sum;
+%    
+%    phi_3(Ly*k+1:Ly*k+Ly,:) = [u(1,k+1).*eye(Ly), u(1,k+1).*eye(Ly)];
+% end
+
 phi_1 = [];
 phi_2 = [];
 phi_3 = [];
@@ -72,6 +93,7 @@ for k = 0:size(y,2)-1
    
    phi_3 = [phi_3; [u(1,k+1).*eye(Ly), u(1,k+1).*eye(Ly)]];
 end
+
 
 phi = [phi_1 phi_2 phi_3];
 
@@ -89,44 +111,80 @@ theta = pinv(phi'*phi)*phi'*yv;
 % U1 = Ux(1:1300,1:8);
 % theta = V1/S1*U1'*yv;
 
-xT0 = theta(1:n);
+xt0 = theta(1:n);
 Bt = reshape(theta(n+1:3*n),[n 2]);
 Dt = reshape(theta(3*n+1:end),[Ly,Lu]);
 
-
+toc
 %% Create the system
 sys = ss(At,Bt,Ct,Dt);
 G = tf(sys);
-xs = zeros(n,numel(time.block));
+xs = zeros(n,numel(time));
 
-xs(:,1) = xT0;
-for i = 1:numel(time.block)-1
+xs(:,1) = xt0;
+for i = 1:numel(time)-1
    xs(:,i+1) = At*xs(:,i) + Bt*u(:,i);
 end
 
 ys = Ct*xs+Dt*u;
 
+%% Save system matrices in a struct
+SID.At = At;
+SID.Bt = Bt;
+SID.Ct = Ct;
+SID.Dt = Dt;
+SID.xt0 = xt0;
 
-
+save('..\..\Data\SID.mat','SID');
 %% Plotting
-% figure
-% subplot(1,2,1)
-% plot(time.block,ys)
-% ylim([20 45])
-% 
-% subplot(1,2,2)
+% % Update StepBlock figure
+% figure(stepBlock)
+% subplot(2,1,1)
 % hold on
-% plot(time.block,y,'.')
-% plot(time.block,ys)
+% plot(time,ys(1,:),'k','LineWidth',2)
+% plot(time,ys(2,:),'k:','LineWidth',2)
+% % legend('y_{1,exp}','y_{1,subID}')
 % hold off
-figure(stepBlock)
-subplot(2,2,1)
-hold on
-plot(time.block,ys(1,:),'k','LineWidth',2)
-legend('')
-hold off
-subplot(2,2,2)
-hold on
-plot(time.block,ys(2,:),'k','LineWidth',2)
-hold off
+% % Singular Values
 
+compSubID = figure('Name','SubID Comparison');
+
+subplot(2,1,1)
+xlabel('Time in s')
+ylabel('Temperature in /degC',  'Interpreter', 'Latex')
+title('Temperature Heater 1')
+hold on
+plot(time,y1,'b.')
+plot(time,ys(1,:),'r','Linewidth',2)
+hold off
+legend({'y_{1,exp}','y_{1,subID}'},'Location','northeast')
+
+subplot(2,1,2)
+xlabel('Time in s')
+ylabel('Temperature in /degC',  'Interpreter', 'Latex')
+title('Temperature Heater 2')
+hold on
+plot(time,y2,'b.')
+plot(time,ys(2,:),'r','Linewidth',2)
+hold off
+legend({'y_{2,exp}','y_{2,subID}'},'Location','northeast')
+
+sgtitle('Comperison experiment data and subspace identification output');
+
+% Singular values
+singularVal = figure('Name','Singular Values Y0sN');
+
+xlabel('singular values')
+ylabel('Amplitude')
+title('Singular Values of Y0sN')
+set(singularVal,'YScale','log')
+plot(svd(Y0sN),'ro','LineWidth',1);
+
+% save figures
+% compSubID = gcf;
+compSubID.Renderer = 'painters';
+saveas(compSubID, '..\..\Latex\images\SYSID\compSubID', 'svg');
+
+% singularVal = gcf;
+singularVal.Renderer = 'painters';
+saveas(singularVal, '..\..\Latex\images\SYSID\singularVal', 'svg');
