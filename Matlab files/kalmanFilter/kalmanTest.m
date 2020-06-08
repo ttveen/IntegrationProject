@@ -1,4 +1,6 @@
 %% Kalman filter test
+clear all
+close all
 %%
 addpath('../')
 load('../../Data/NSID');
@@ -31,15 +33,24 @@ time.kalman = zeros(1,runtime);
 xhat = zeros(size(A,1),runtime);
 yhat = zeros(2,runtime);
 
-%Create input
+ %Create input
 interval = 50; %50 second interval
 intervals = runtime/interval;
+%Create input 1
 u1 = zeros(1,runtime);
 u2 = zeros(1,runtime);
 for i = 0:interval
     u1(interval*i+1:interval*(i+1)) = 50*rand(1,1);
     u2(interval*i+1:interval*(i+1)) = 50*rand(1,1);
 end
+
+%Create input 2
+% u = [0, 0, 0, 0; 50, 50, 50, 50];
+% for i = 1:intervals
+%     u1(interval*(i-1)+1:interval*(i)) = u(1,i);
+%     u2(interval*(i-1)+1:interval*(i)) = u(2,i);
+% end
+% clear u
 
 %Measure the corresponding output
 led(1);
@@ -56,16 +67,16 @@ for i = 1:runtime
     xhat(:,i+1) = (A-K*C)*xhat(:,i) + B*[u1(i); u2(i)] + K*[t1.kalman(i); t2.kalman(i)];
     yhat(:,i) = C*xhat(:,i) + D*[u1(i); u2(i)];
     
-    plot(fig1a,time.kalman(i),t1.kalman(i),'r.')
+    plot(fig1a,time.kalman(i),t1.kalman(i),'r.','MarkerSize',10)
     hold on
-    plot(fig1a,time.kalman(i),t2.kalman(i),'b.')
-    plot(fig1a,time.kalman(i), yhat(1,i), 'r+')
-    plot(fig1a,time.kalman(i), yhat(2,i), 'b+')
+    plot(fig1a,time.kalman(i),t2.kalman(i),'b.','MarkerSize',10)
+    plot(fig1a,time.kalman(i), yhat(1,i), 'r+','MarkerSize',10)
+    plot(fig1a,time.kalman(i), yhat(2,i), 'b+','MarkerSize',10)
     %legend(fig2a,'Heater 1','Location','northwest')
     
-    plot(fig1b, time.kalman(i), u1(i), 'r.')
+    plot(fig1b, time.kalman(i), u1(i), 'r.','MarkerSize',10)
     hold on
-    plot(fig1b, time.kalman(i), u2(i), 'b.')
+    plot(fig1b, time.kalman(i), u2(i), 'b.','MarkerSize',10)
     %legend(fig2b,'Heater 2','Location','northwest')
     
     t(i) = toc;
@@ -80,8 +91,11 @@ end
 turnOff(a)
 led(0)
 time.kalman(end) = [];
-
+legend(fig1a,{'$T_{C1,measured}$','$T_{C2,measured}$','$T_{C1,estimate}$','$T_{C2,estimate}$'},'Interpreter','latex')
+legend(fig1b,{'$u_1$', '$u_2$'}, 'Interpreter','latex')
 kalmanTestFig = gcf;
+set(kalmanTestFig, 'position', get(0, 'ScreenSize'))
+%%
 stepBlock.Renderer = 'painters';
-saveas(kalmanTestFig, '../../Latex/images/kalmanTest/kalmanTest2', 'svg');
-save('../../Data/kalmanTest2.mat', 'time', 't1', 't2', 'kalmanTestFig', 'u1', 'u2', 'xhat', 'yhat')
+saveas(kalmanTestFig, '../../Latex/images/kalmanTest/kalmanTest1', 'svg');
+save('../../Data/kalmanTest1.mat', 'time', 't1', 't2', 'kalmanTestFig', 'u1', 'u2', 'xhat', 'yhat')
