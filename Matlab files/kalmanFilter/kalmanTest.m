@@ -37,20 +37,20 @@ yhat = zeros(2,runtime);
 interval = 50; %50 second interval
 intervals = runtime/interval;
 %Create input 1
-u1 = zeros(1,runtime);
-u2 = zeros(1,runtime);
-for i = 0:interval
-    u1(interval*i+1:interval*(i+1)) = 50*rand(1,1);
-    u2(interval*i+1:interval*(i+1)) = 50*rand(1,1);
-end
+% u1 = zeros(1,runtime);
+% u2 = zeros(1,runtime);
+% for i = 0:interval
+%     u1(interval*i+1:interval*(i+1)) = 50*rand(1,1);
+%     u2(interval*i+1:interval*(i+1)) = 50*rand(1,1);
+% end
 
 %Create input 2
-% u = [0, 0, 0, 0; 50, 50, 50, 50];
-% for i = 1:intervals
-%     u1(interval*(i-1)+1:interval*(i)) = u(1,i);
-%     u2(interval*(i-1)+1:interval*(i)) = u(2,i);
-% end
-% clear u
+u = [50, 0, 50, 0; 0, 50, 0, 50];
+for i = 1:intervals
+    u1(interval*(i-1)+1:interval*(i)) = u(1,i);
+    u2(interval*(i-1)+1:interval*(i)) = u(2,i);
+end
+clear u
 
 %Measure the corresponding output
 led(1);
@@ -97,5 +97,5 @@ kalmanTestFig = gcf;
 set(kalmanTestFig, 'position', get(0, 'ScreenSize'))
 %%
 stepBlock.Renderer = 'painters';
-saveas(kalmanTestFig, '../../Latex/images/kalmanTest/kalmanTest1', 'svg');
-save('../../Data/kalmanTest1.mat', 'time', 't1', 't2', 'kalmanTestFig', 'u1', 'u2', 'xhat', 'yhat')
+saveas(kalmanTestFig, '../../Latex/images/kalmanTest/kalmanTest2', 'svg');
+save('../../Data/kalmanTest2.mat', 'time', 't1', 't2', 'kalmanTestFig', 'u1', 'u2', 'xhat', 'yhat')
