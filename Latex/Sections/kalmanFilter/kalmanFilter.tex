@@ -1,3 +1,4 @@
+\label{sec:kalmanFilter}
 To control a dynamic system, it is important to know the states of the system. In case of the Temperature Control Lab, only two measurements are done. The model obtained in the previous has a higher order, which implies that some states are not measured. The unmeasured states can be estimated using a linear observer. The observer estimates the states using the measured inputs. The estimated states converge to the actual states asymptotically.
 In the presence of either measurement or process noise, a Kalman filter is often used \cite{kalmanFilter}. The Kalman filter is a linear observer that minimises the covariance of the estimation error. The Kalman filter for a LTI system \cite[p.~162]{FilteringIdentification}
 \begin{align*}
@@ -17,10 +18,10 @@ $$
     P = APA^T + Q - (S+APC^T)(CPC^T+T)^{-1}(S+APC^T)^T
 $$
 The observer has the following form, where $(A-KC)$ is asymptotically stable
-\begin{align*}
-    \hat{x}(k+1) &= (A-KC)\hat{x} + Bu(k) + Ky(k)\\
-    \hat{y}(k) &= C\hat{x}(k) + Du(k)
-\end{align*}
+\begin{align}
+    \hat{x}(k+1) &= (A-KC)\hat{x} + Bu(k) + Ky(k) \label{eq:kalmanSU1}\\
+    \hat{y}(k) &= C\hat{x}(k) + Du(k) \label{eq:kalmanSU2}
+\end{align}
 \subsection{Covariance estimation}
 To design a the kalmain filter, the covariance matrices $Q$, $S$ and $R$ need to be determined. The subspace identification method can be used to get an estimate for these covariance matrices, the so called N4SID subspace method \cite{VANOVERSCHEE199475}. This method approximates the state sequence $X_{s,N}$ of a Kalman filter. An estimate of the row space $\hat{X}_{s,N}$ of this state sequence can be computed using the RQ factorisation and a singular value decomposition
 \begin{align*}
