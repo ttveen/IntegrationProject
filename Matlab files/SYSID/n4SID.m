@@ -101,9 +101,9 @@ NSID.At = At;
 NSID.Bt = Bt;
 NSID.Ct = Ct;
 NSID.Dt = Dt;
+NSID.Ks = Ks;
 
-save('..\..\Data\SID.mat','SID');
-
+save('..\..\Data\NSID.mat','NSID');
 
 %% Plotting
 
