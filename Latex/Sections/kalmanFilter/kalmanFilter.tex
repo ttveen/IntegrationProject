@@ -2,7 +2,7 @@ To control a dynamic system, it is important to know the states of the system. I
 In the presence of either measurement or process noise, a Kalman filter is often used \cite{kalmanFilter}. The Kalman filter is a linear observer that minimises the covariance of the estimation error. The Kalman filter for a LTI system \cite[p.~162]{FilteringIdentification}
 \begin{align*}
     x(k+1) &= Ax(k) +Bu(k) + w(k)\\
-    y(k) = Cx(k) + Du(k) + v(k)
+    y(k) &= Cx(k) + Du(k) + v(k)
 \end{align*}
 with $w(k)$ and $v(k)$ zero mean random sequences, with the covariance matrices
 \begin{align*}
@@ -19,7 +19,7 @@ $$
 The observer has the following form, where $(A-KC)$ is asymptotically stable
 \begin{align*}
     \hat{x}(k+1) &= (A-KC)\hat{x} + Bu(k) + Ky(k)\\
-    \hat{y}(k) &= C\hat{x}(k)
+    \hat{y}(k) &= C\hat{x}(k) + Du(k)
 \end{align*}
 \subsection{Covariance estimation}
 To design a the kalmain filter, the covariance matrices $Q$, $S$ and $R$ need to be determined. The subspace identification method can be used to get an estimate for these covariance matrices, the so called N4SID subspace method \cite{VANOVERSCHEE199475}. This method approximates the state sequence $X_{s,N}$ of a Kalman filter. An estimate of the row space $\hat{X}_{s,N}$ of this state sequence can be computed using the RQ factorisation and a singular value decomposition
@@ -29,7 +29,7 @@ To design a the kalmain filter, the covariance matrices $Q$, $S$ and $R$ need to
 The estimate of the row space is then, using the singular value decomposition
 \begin{align*}
     R_{32}R_{22}^{-1} \begin{bmatrix} U_{0,s,N} \\ Y_{0,s,N}\end{bmatrix} = U_n\Sigma_nV_n
-    \hat{X}_s,N = \Sigma_n^{1/2}V_n^T
+    \hat{X}_{s,N} = \Sigma_n^{1/2}V_n^T
 \end{align*}
 where $n$ denotes the order of the model. The state matrices can be estimated using linear least squares
 $$
@@ -44,8 +44,17 @@ C_{T} & D_{T}
 U_{s, 1, N-1}
 \end{array}\right]||_{\mathrm{F}}^{2}
 $$
-which results in the estmated system $\hat{A}$, $\hat{B}$, $\hat{C}$ and $\hat{D}$. The residuals can be used to compute the covariance matrices \cite[p.~333]{FilteringIdentification}.
+which results in the estimated system $\hat{A}$, $\hat{B}$, $\hat{C}$ and $\hat{D}$. The residuals can be used to compute the covariance matrices \cite[p.~333]{FilteringIdentification}.
 \begin{align*}
     \begin{bmatrix} \hat{W}_{s,1,N-1} \\ \hat{V}_{s,1,N-1} \end{bmatrix} &= \begin{bmatrix} \hat{X}_{s+1,N} \\ \hat{Y}_{s,1,N-1} \end{bmatrix} - \begin{bmatrix} \hat{A} & \hat{B}\\ \hat{C} & \hat{D} \end{bmatrix} \begin{bmatrix} \hat{X}_{s,N-1} \\ \hat{U}_{s,1,N-1} \end{bmatrix} \\
-    \begin{bmatrix} \hat{Q} & \hat{A}\\ \hat{S}^T & \hat{R} \end{bmatrix} &= \lim_{N \xrightarrow{}\infty} \frac{1}{N} \begin{bmatrix} \hat{W}_{s,1,N} \\ \hat{V}_{s,1,N} \end{bmatrix} \begin{bmatrix} \hat{W}_{s,1,N}^T & \hat{V}_{s,1,N}^T \end{bmatrix}
+    \begin{bmatrix} \hat{Q} & \hat{S}\\ \hat{S}^T & \hat{R} \end{bmatrix} &= \lim_{N \xrightarrow{}\infty} \frac{1}{N} \begin{bmatrix} \hat{W}_{s,1,N} \\ \hat{V}_{s,1,N} \end{bmatrix} \begin{bmatrix} \hat{W}_{s,1,N}^T & \hat{V}_{s,1,N}^T \end{bmatrix}
 \end{align*}
+
+\subsection{Kalman filter comparison}
+% \begin{figure}
+%     \centering
+%     \includegsvg{}
+%     \caption{Comparison of the measured output and the estimated output}
+%     \label{fig:comp_Kalman}
+% \end{figure}
+From figure \ref{fig:comp_Kalman} it can be seen that the output estimated with the Kalman filter slowly converges to the measured output. For Heater 1 this is achieved after approximately     
