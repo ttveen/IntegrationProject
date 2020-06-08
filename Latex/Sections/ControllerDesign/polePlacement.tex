@@ -1,0 +1,69 @@
+After obtaining a system model and a linear Kalman filter, a controller can be designed. The goal is to obtain the following results:
+\begin{itemize}
+    \item A fast rising time
+    \item No steady state error
+    \item disturbance rejection
+\end{itemize}
+Since the system is prone to overheating, the system identification was done with restricted input. The controllers should also compute restricted control input:
+\begin{align}
+    0\leq u_1 \leq 50 \label{eq:controleffort1} \\
+    0\leq u_2 \leq 50 \label{eq:controleffort2}
+\end{align}
+    
+These restrictions ensure that no damage is done to the system.
+In this chapter the identified model from chapter \ref{sec:kalmanFilter} is used. Since this model is linear, only linear controller will be considered. First, a pole-placement controller is designed, then a model-predictive controller (MPC) is considered. The performance of these controllers will be compared and discussed.
+\subsection{Pole Placement controller}
+For the pole placement controller, the following state feedback law is considered
+$$
+u(k) = -Fx(k) + Gr(k)
+$$
+where $F$ and $G$ are the state- and reference feedback gain matrices respectively. $r(k)$ is the reference signal. The state update equations \ref{eq:kalmanSU1} and \ref{eq:kalmanSU2} become
+\begin{align*}
+    \hat{x}(k+1) &= (A-KC-BF)\hat{x} + Ky(k) +BGr(k)\\
+    \hat{y}(k) &= (C-DF)\hat{x}(k) + DGr(k) 
+\end{align*}
+According to the separation principle \cite{controlTheory}, a stable linear observer can be combined with a stable full-information linear feedback controller. So, choosing $A-BF$ Hurwitz ensures the closed loop system is stable, since the Kalman filter is stable linear observer. To ensure that the reference signal $r(k)$ is tracked, an appropriate feedback gain matrix $G$ has to chosen. This can be done by transforming the following system to the z-domain
+
+\begin{align*}
+    x(k+1) &= Ax(k)+Bu(k) \\
+    y(k) &= Cx(k)+Du(k) \\
+    u(k) &= -Fx(k) + Gr(k)
+\end{align*}
+the transformed system with the the equations substituted into each other gives
+\begin{align*}
+    X(z) &= (zI-A+BF)^{-1}BGR(z) \\
+    Y(z) &=  ((C_DF)(zI_n-A+BF)^{-1}B+D)GR(z)\\
+    U(z) &= (I-F(zI_n-A+BF)^{-1}B)R(z)
+\end{align*}
+To ensure asymptotic reference tracking, the feedback gain matrix $G$ needs to result in 
+\begin{align*}
+    \lim_{z \to 1}[R(z)-Y(z)]=0
+\end{align*}
+which requires to take G with
+$$
+(D+(C-DF)(I-A+BF)^{-1}B)G=I
+$$
+which results in
+\begin{equation}
+G = (D+(C-DF)(I-A+BF)^{-1}B)^{-1} \label{eq:refGain}    
+\end{equation}
+
+Pole placement controllers have a state feedback gain matrix $F$, such that $(A-BF)$ has eigenvalues at certain chosen values. For a discrete system, this means that eigenvalues (poles) near $0$ result in fast controller dynamics, while eigenvalues near $1$ result in slow controller dynamics. The controller poles should be chosen slower than the observer poles, since the controller uses the estimated states. If the estimated states are still converging, the controller cannot give a sensible input. For the Temperature Control Lab, this will not pose a problem, since the system dynamics are rather slow.\\
+
+Choosing fast poles lead to faster dynamics, which is desirable, since it reduces the rise time. However, it also increases the control effort, which should be restricted. The poles have to be chosen such that the control effort should not exceed the limitations set in equations \ref{eq:controleffort1} and \ref{eq:controleffort2}. Choosing poles of $(A-BF)$
+\begin{align}
+    (A-BF)_{poles} = \begin{bmatrix} 0.9870 & 0.9894 & 0.9918 & 0.9942 & 0.9966 & 0.9999 \end{bmatrix} \label{eq:PPpoles1}
+\end{align}
+Note that these poles are rather close to $1$, and thus very slow. The results of an experiment with these closed loop poles are shown in figure ... . The reference is a static signal $r = 30^{\circ}C$. In the first 50 seconds, the observer dynamics can be seen. After the observer transient has died out, the controller dynamics can be seen. The estimated state slowly approaches the reference signal, and overshoots it slightly. The system outputs continue to oscillate around the $30^{\circ}C$, but never reach it both at the same time. An explanation for this could be outside disturbances, or errors in the identified model. The system does remain within $1^{\circ}C$ of the reference, so the controller does a decent job in that regard.
+\begin{figure}
+    \centering
+    \includesvg{}
+    \caption{Pole Placement controller, system outputs. Poles chosen as in \ref{eq:PPpoles1}}
+    \label{fig:PPexp1}
+\end{figure}
+The closed loop system reaches the reference after approximately 500 seconds, which is quite slow. From the input it comes apparent that not the full range of inputs was used. Higher inputs should be possible, if the poles were made faster. Choosing poles of $(A-BF)$
+\begin{align}
+    (A-BF)_{poles} = \begin{bmatrix} 0.980 & 0.982 & 0.984 & 0.986 & 0.988 & 0.990 \end{bmatrix} \label{eq:PPpoles2}
+\end{align}
+will result in inputs over 200, which is far too high. It does not only exceed the limitations set on the control effort, it also exceeds the possible input (100). This will cause input saturation and integrator windup.\\
+Pole placement controller design is easy in its principle, but limited in its capabilities. Choosing $F$ can also be done by minimising a cost function. This feedback control approach be considered in the following section.

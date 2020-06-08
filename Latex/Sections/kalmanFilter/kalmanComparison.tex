@@ -1,8 +1,17 @@
 \subsection{Kalman filter comparison}
+From figures \ref{fig:comp_Kalman1} and \ref{fig:comp_Kalman2} it can be seen that the output estimated with the Kalman filter slowly converges to the measured output. The estimated output of heater 1 converges much quicker ($\approx $) than that of heater 2. After 30 seconds, both estimates are near the measurements. The duration of the convergence may appear slow, but it corresponds to the slower dynamics of the system. During the first 30 seconds of an experiment or measurement, the estimate is significantly off, thus the controller will give inputs to the system that are significantly off too. Once the estimate is very similar to the measurement, the estimate and measurement evolve similar over time. This is expected behaviour for a linear observer or Kalman filter.
+
+Note that the initial estimates were intentionally set to $T_{C1,measured} = T_{C1,measured} = 0$. There is a significant difference between the initial estimates and the initial temperature of the sensors (room temperature). Choosing this difference allows for the inspection of the convergence time. Performance will increase when the initial conditions of the estimate are closer to the real conditions.
+
 \begin{figure}
     \centering
     \includesvg[width=\textwidth]{images/kalmanTest/kalmanTest1.svg}
     \caption{Comparison of the measured output and the estimated output}
-    \label{fig:comp_Kalman}
+    \label{fig:comp_Kalman1}
 \end{figure}
-From figure \ref{fig:comp_Kalman} it can be seen that the output estimated with the Kalman filter slowly converges to the measured output. The estimated output of heater 1 converges much quicker ($\approx $) than that of heater 2 this is achieved after approximately
+\begin{figure}
+    \centering
+    \includesvg[width=\textwidth]{images/kalmanTest/kalmanTest2.svg}
+    \caption{Comparison of the measured output and the estimated output}
+    \label{fig:comp_Kalman2}
+\end{figure}
