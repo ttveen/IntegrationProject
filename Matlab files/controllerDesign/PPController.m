@@ -39,12 +39,13 @@ r = 30*ones(2,runtime);
 %% Determine gain
 % p = [-0.9 -0.8 -0.7 0.7 0.8 0.9]; % stable discrete poles
 % p = [-0.3 -0.2 -0.1 0.1 0.2 0.3];
-p = linspace(0.95,0.97,6);
+p = linspace(0.98,0.99,6);
 
 
-Kx = place(A,B,p); % pole placement
+%Kx = place(A,B,p); % pole placement
 %Kr = inv(C/(eye(size(A))-A+B*Kx)*B); % reference gain
-
+%For LQR control
+Kx = [-22.3112995358586,-2.34395829803522,1.44421673670272,0.463052019339851,-0.586068184551735,0.0519736559802679;-16.2696117036986,2.56721439335664,1.24800644905354,1.20426827073047,-0.460281038324108,0.0545396527165367];
 Kr = inv((C-D*Kx)*inv(eye(size(A))-A+B*Kx)*B+D);
 % %% simulate
 x = xhat;
@@ -74,8 +75,8 @@ plot(u(2,:))
 title('Controller output / system input')
 legend('u1','u2')
 sgtitle('Pole Placement step reference tracking simulation')
-PPstepref = gcf;
-saveas(PPstepref, '../../Latex/images/controller/PPsetref1', 'svg');
+% PPstepref = gcf;
+% saveas(PPstepref, '../../Latex/images/controller/PPsetref1', 'svg');
 
 
 %% Create figure
@@ -151,5 +152,5 @@ legend(fig1a,{'$T_{C1,measured}$','$T_{C2,measured}$','$T_{C1,estimate}$','$T_{C
 legend(fig1b,{'$u_1$', '$u_2$'}, 'Interpreter','latex')
 PPexp = gcf;
 PPexp.Renderer = 'painters';
-saveas(PPexp, '../../Latex/images/Controller/PPexp2', 'svg');
-save('../../Data/PPexp2.mat', 'time', 't1', 't2', 'PPexp', 'u', 'xhat', 'yhat')
+saveas(PPexp, '../../Latex/images/Controller/LQRexp1', 'svg');
+save('../../Data/LQRexp1.mat', 'time', 't1', 't2', 'PPexp', 'u', 'xhat', 'yhat')
