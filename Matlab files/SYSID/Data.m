@@ -204,7 +204,7 @@ figure('Name','Block wave Response, long experiment')
 fig3a = subplot(2,1,1);
 hold on
 xlabel('Time in s')
-ylabel('Temperature in ^$\{circ}C$',  'Interpreter', 'Latex')
+ylabel('Temperature in $^{\circ}C$',  'Interpreter', 'Latex')
 title('Temperature')
 fig3b = subplot(2,1,2);
 xlabel('Time in s')
