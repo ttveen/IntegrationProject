@@ -1,4 +1,4 @@
-%% MPC Controller Design
+% MPC Controller Design
 clear; clc; close all;
 
 
