@@ -54,16 +54,16 @@ Choosing fast poles lead to faster dynamics, which is desirable, since it reduce
 \begin{align}
     (A-BF)_{poles} = \begin{bmatrix} 0.9870 & 0.9894 & 0.9918 & 0.9942 & 0.9966 & 0.9999 \end{bmatrix} \label{eq:PPpoles1}
 \end{align}
-Note that these poles are rather close to $1$, and thus very slow. The results of an experiment with these closed loop poles are shown in figure ... . The reference is a static signal $r = 30^{\circ}C$. In the first 50 seconds, the observer dynamics can be seen. After the observer transient has died out, the controller dynamics can be seen. The estimated state slowly approaches the reference signal, and overshoots it slightly. The system outputs continue to oscillate around the $30^{\circ}C$, but never reach it both at the same time. An explanation for this could be outside disturbances, or errors in the identified model. The system does remain within $1^{\circ}C$ of the reference, so the controller does a decent job in that regard.
+Note that these poles are rather close to $1$, and thus very slow. The results of an experiment with these closed loop poles are shown in figure ... . The reference is a static signal $r = 30^{\circ}C$. In the first 50 seconds, the observer dynamics can be seen. After the observer transient has died out, the controller dynamics can be seen. The estimated state slowly approaches the reference signal, and overshoots it slightly. The system outputs continue to oscillate around the $30^{\circ}C$, but never reach it both at the same time. An explanation for this could be outside disturbances, or errors in the identified model. After 2000 seconds, the system surprisingly heats up again. A cause might be that there are some very slow dynamics, or some external disturbances, for which the controller overcompensates.
 \begin{figure}
     \centering
-    \includesvg{}
+    \includesvg{images/controller/PPexp1.svg}
     \caption{Pole Placement controller, system outputs. Poles chosen as in \ref{eq:PPpoles1}}
     \label{fig:PPexp1}
 \end{figure}
 The closed loop system reaches the reference after approximately 500 seconds, which is quite slow. From the input it comes apparent that not the full range of inputs was used. Higher inputs should be possible, if the poles were made faster. Choosing poles of $(A-BF)$
 \begin{align}
-    (A-BF)_{poles} = \begin{bmatrix} 0.980 & 0.982 & 0.984 & 0.986 & 0.988 & 0.990 \end{bmatrix} \label{eq:PPpoles2}
+    (A-BF)_{poles} = \begin{bmatrix} 0.980 & 0.982 & 0.984 & 0.986 & 0.988 & 0.990 \end{bmatrix} \nonumber
 \end{align}
 will result in inputs over 200, which is far too high. It does not only exceed the limitations set on the control effort, it also exceeds the possible input (100). This will cause input saturation and integrator windup.\\
 Pole placement controller design is easy in its principle, but limited in its capabilities. Choosing $F$ can also be done by minimising a cost function. This feedback control approach be considered in the following section.
