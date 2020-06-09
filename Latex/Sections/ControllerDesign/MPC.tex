@@ -1,5 +1,40 @@
 \subsection{Model Predictive Control}
 Model Predictive Control is a feedback control strategy that relies on minimising a cost function, for a finite horizon. MPC allows for bounds on the states, input and output. First, Linear Quadratic Control (LQR), will be considered. LQR relies on minimising a cost function, but for a infinite horizon. LQR does not allow for constraints.
+
 \subsubsection{Linear Quadratic Control}
+LQR controllers are feedback controllers, with a feedback gain matrix $F$ that minimises the cost function
+\begin{equation}
+    J = \sum_{k=0}^{\infty} x^T(k)Qx(k) + u^T(k)Ru(k) + 2x^T(k)Nu(k) \label{eq:LQRcost}
+\end{equation}
+where weighting matrices $Q$, $R$ and $N$ are positive definite. $Q$ can be interpreted as a weight on the state; a large difference between the desired state and actual state results in a high cost. Similarly, $R$ penalises large control effort. $N$ is chosen zero.
+Feedback gain matrix $F$, that minimises cost function \ref{eq:LQRcost}, can be computed as follows
+$$
+F = (R+BPB^T)^{-1}(B^TPA+N^T)
+$$
+where $P$ is the solution to the discrete algebraic Ricatti equation
+\begin{equation}
+P = APA^T + Q - (S+APC^T)(CPC^T+T)^{-1}(S+APC^T)^T \label{eq:LQRricatti}
+\end{equation}
+Parameter tuning for LQR is intuitive. If a fast convergence of the state is desired, choose a large $Q$ matrix. If large control efforts are undesirable, choose a large $R$ matrix. Figure \ref{fig:LQR1} shows the controller performance for parameters
+$$
+Q = C'*C \text{ and } R = 0.3I_2
+$$
+The reference is again $30^{\circ}C$. The system takes up to approximately 300 seconds to reach the reference signal, which is faster than the pole placement controller. There is a slight steady state error of around  $1^{\circ}C$. During the convergence of the Kalman filter, the inputs exceeds the bound. The inputs are first as high as 60\%, and then drop to below zero. After the steady state has been reached, the control effort remains constant. This controller does not satisfy the conditions. The LQR controllor can be used as a basis for the MPC controller, where we can put hard constraints on the input.
+\begin{figure}
+    \centering
+    \includesvg[width = 0.8\textwidth]{images/controller/LQRexp1.svg}
+    \caption{Linear Quadratic controller experiment}
+    \label{fig:LQR1}
+\end{figure}
 
 \subsubsection{MPC Design}
+Where LQR minimises the cost function \ref{eq:LQRcost} for a infinite horizon, a MPC controller minimises a similar cost function for a finite horizon. The cost function for horizon $N$ is
+\begin{align}
+    V_N(x_0,u_N) &= \sum_{k=0}^{N-1}[x^T(k)Qx(k) + u^T(k)Ru(k)] +  \label{eq:MPCcost}\\
+    V_f(x(N)) &= x(N)^TPx(N) \nonumber
+\end{align}
+where $V_f$ denotes the terminal cost, the cost of having the system in certain state at the end of the horizon. The weighting matrices $Q$ and $R$ are the same as for the LQR design, and $P$ is the solution to equation \ref{eq:LQRricatti}. $x_0$ is the initial state and $u_N$ is the input up until horizon $N$. Note that an extra design parameter, horizon $N$, is introduced. A large horizon $N$ gives better solution, since the controller can predict more of the future. It comes at the cost of a larger computation time.
+Since a MPC controller is a optimisation problem, it allows for constraints on the state and input. Constraints \ref{eq:controleffort1} and \ref{eq:controleffort2} can be enforced. Since the states identified model have no physical meaning, it is hard to formulate sensible constraints for the states.
+A disadvantage of MPC is the computation time required. After every iteration, the horizon moves one step further, thus for every iteration a new optimisation has to be solved. The computation time required should be lower than sampling time of the system. The sampling time of the Temperature Control Lab is one second.
+
+For MPC, the YALMIP toolbox for Matlab was used \cite{Lofberg2004}.
