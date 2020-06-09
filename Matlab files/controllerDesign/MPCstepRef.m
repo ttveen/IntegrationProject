@@ -211,16 +211,16 @@ led(0)
 
 figure('Name','MPC, step reference')
 fig2a = subplot(2,1,1);
-plot(fig2a, time.MPC, t1.MPC, 'r.','MarkerSize',6)
+plot(fig2a, time.MPC, t1.MPC, 'r.','MarkerSize',8)
 hold on
-plot(fig2a, time.MPC, t2.MPC, 'b.','MarkerSize',6)
-plot(fig2a, time.MPC, yhat(1,:), 'r','LineWidth',2)
-plot(fig2a, time.MPC, yhat(2,:), 'b','LineWidth',2)
+plot(fig2a, time.MPC, t2.MPC, 'b.','MarkerSize',8)
+plot(fig2a, time.MPC, yhat(1,:), 'r','LineWidth',3)
+plot(fig2a, time.MPC, yhat(2,:), 'b','LineWidth',3)
 xlabel('Time in s')
 ylabel({'Temperature in $^{\circ}C$'},  'Interpreter', 'Latex')
 title('Temperature')
 axis(fig2a,[0 runtime -inf inf])
-legend(fig2a,{'$T_{C1,measured}$','$T_{C2,measured}$','$T_{C1,estimate}$','$T_{C2,estimate}$'},'Interpreter','latex','Location','southeast','FontSize', 15)
+legend(fig2a,{'$T_{C1,measured}$','$T_{C2,measured}$','$T_{C1,estimate}$','$T_{C2,estimate}$'},'Interpreter','latex','Location','southeast','FontSize', 20)
 fig2b = subplot(2,1,2);
 xlabel('Time in s')
 ylabel('Input level',  'Interpreter', 'Latex')
@@ -228,13 +228,14 @@ title('Input')
 hold on
 plot(fig2b, time.MPC, u(1,:), 'r.')
 plot(fig2b, time.MPC, u(2,:), 'b.')
-legend(fig2b,{'$u_1$', '$u_2$'}, 'Interpreter','latex','FontSize', 15)
+legend(fig2b,{'$u_1$', '$u_2$'}, 'Interpreter','latex','FontSize', 20)
 axis(fig2b,[0 runtime -inf inf])
 
 MPCexpstep = gcf;
 set(MPCexpstep, 'position', get(0, 'ScreenSize'))
 MPCexpstep.Renderer = 'painters';
 saveas(MPCexpstep, '../../Latex/images/controller/MPCstep', 'svg');
+save('../../Data/MPCstep.mat', 'time', 't1', 't2', 'MPCexpstep', 'u','xhat','yhat', 'N')
 close gcf
 % Computation time plot
 figure
@@ -245,4 +246,4 @@ title('Computation time required')
 MPCcompTime = gcf;
 MPCcompTime.Renderer = 'painters';
 saveas(MPCcompTime, '../../Latex/images/controller/MPCcompTime', 'svg');
-save('../../Data/MPCstep.mat', 'time', 't1', 't2', 'MPCexpstep', 'u','xhat','yhat', 'N','MPCcompTime')
+
