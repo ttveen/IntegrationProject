@@ -32,8 +32,8 @@ According to the separation principle \cite{controlTheory}, a stable linear obse
 the transformed system with the the equations substituted into each other gives
 \begin{align*}
     X(z) &= (zI-A+BF)^{-1}BGR(z) \\
-    Y(z) &=  ((C_DF)(zI_n-A+BF)^{-1}B+D)GR(z)\\
-    U(z) &= (I-F(zI_n-A+BF)^{-1}B)R(z)
+    Y(z) &=  ((C-DF)(zI-A+BF)^{-1}B+D)GR(z)\\
+    U(z) &= (I-F(zI-A+BF)^{-1}B)R(z)
 \end{align*}
 To ensure asymptotic reference tracking, the feedback gain matrix $G$ needs to result in 
 \begin{align*}

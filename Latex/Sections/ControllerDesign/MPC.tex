@@ -34,7 +34,23 @@ Where LQR minimises the cost function \ref{eq:LQRcost} for a infinite horizon, a
     V_f(x(N)) &= x(N)^TPx(N) \nonumber
 \end{align}
 where $V_f$ denotes the terminal cost, the cost of having the system in certain state at the end of the horizon. The weighting matrices $Q$ and $R$ are the same as for the LQR design, and $P$ is the solution to equation \ref{eq:LQRricatti}. $x_0$ is the initial state and $u_N$ is the input up until horizon $N$. Note that an extra design parameter, horizon $N$, is introduced. A large horizon $N$ gives better solution, since the controller can predict more of the future. It comes at the cost of a larger computation time.
-Since a MPC controller is a optimisation problem, it allows for constraints on the state and input. Constraints \ref{eq:controleffort1} and \ref{eq:controleffort2} can be enforced. Since the states identified model have no physical meaning, it is hard to formulate sensible constraints for the states.
+Since a MPC controller is a optimisation problem, it allows for constraints on the state and input. Constraints \ref{eq:controleffort1} and \ref{eq:controleffort2} can be enforced. Since the states of the identified model have no physical meaning, it is hard to formulate sensible constraints for the states.
 A disadvantage of MPC is the computation time required. After every iteration, the horizon moves one step further, thus for every iteration a new optimisation has to be solved. The computation time required should be lower than sampling time of the system. The sampling time of the Temperature Control Lab is one second.
 
 For MPC, the YALMIP toolbox for Matlab was used \cite{Lofberg2004}.
+
+\subsection{Results}
+
+\begin{figure}
+    \centering
+    \includesvg[width=0.8\textwidth]{images/controller/MPCstep.svg}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includesvg[width=0.8\textwidth]{images/controller/MPCcompTime.svg}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}
