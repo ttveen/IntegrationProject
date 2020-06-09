@@ -15,7 +15,7 @@ K = NSID.Ks;
 
 %% Init variables
 % init Time
-N = 30; % seconds
+N = 10;
 
 % init reference
 r = 30*ones(2,N);
