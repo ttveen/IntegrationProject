@@ -82,7 +82,7 @@ MPC_x(:,1) = x;
 MPC_u(:,1) = [0;0];
 
 for i = 1:runtime-1
-    future_r = [35+3*sin((i:i+N)/100); 30+3*cos((i:i+N)/150)];
+    future_r = [35+10*sin((i:i+N)/50); 30+5*cos((i:i+N)/75)];
     inputs = {x,future_r};
     U = controller{inputs};
 %     U = solutions{1};
@@ -94,7 +94,7 @@ for i = 1:runtime-1
 end
 
 y = C*MPC_x+D*MPC_u;
-yr = [35+3*sin((0:1:runtime)/100); 30+3*cos((0:1:runtime)/150)];
+yr = [35+10*sin((0:1:runtime)/50); 30+5*cos((0:1:runtime)/75)];
 figure
 hold on
 plot(yr(1,:),'r--')
@@ -129,7 +129,7 @@ title('Input')
 axis([0 runtime -5 50])
 hold on
 %Reference signal
-yr = [35+3*sin((0:1:runtime)/100); 30+3*cos((0:1:runtime)/150)];
+yr = [35+10*sin((0:1:runtime)/50); 30+5*cos((0:1:runtime)/75)];
 plot(fig1a,(0:1:runtime),yr(1,:),'r--')
 plot(fig1a,(0:1:runtime),yr(2,:),'b--')
 led(0.5)
@@ -137,7 +137,7 @@ for i = 1:runtime
     currenttime = clock;
     tic
     % generate reference
-    future_r = [35+3*sin((i:i+N)/100); 30+3*cos((i:i+N)/150)];
+    future_r = [35+10*sin((i:i+N)/50); 30+5*cos((i:i+N)/75)];
     % generated input
     tic
     inputs = {xhat(:,i),future_r};
@@ -207,6 +207,6 @@ axis(fig2b,[0 runtime -inf inf])
 MPCexpper1 = gcf;
 set(MPCexpper1, 'position', get(0, 'ScreenSize'))
 MPCexpper1.Renderer = 'painters';
-saveas(MPCexpper1, '../../Latex/images/controller/MPCper1', 'svg');
-save('../../Data/MPCper1.mat', 'time', 't1', 't2', 'MPCexpper1', 'u','xhat','yhat', 'N','MPCcompTime')
+saveas(MPCexpper1, '../../Latex/images/controller/MPCper2', 'svg');
+save('../../Data/MPCper2.mat', 'time', 't1', 't2', 'MPCexpper1', 'u','xhat','yhat', 'N','MPCcompTime')
 close gcf
