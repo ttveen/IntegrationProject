@@ -5,7 +5,7 @@ clear; clc; close all;
 %% Load and initialise experiment data
 addpath('../')
 load('../../Data/NSID');
-tclab;
+%tclab;
 
 A = NSID.At;
 B = NSID.Bt;
@@ -20,7 +20,7 @@ runtime = 400; % seconds
 %% MPC
 
 % MPC parameters
-N = 30; % Horizon
+N = 100; % Horizon
 nu = 2;
 nx = size(A,1);
 ny = size(C,1);
@@ -32,14 +32,14 @@ ylb = 0;
 yub = 60;
 
 % solution to the discrete time Riccati equations
-Q = C'*C;
+% Q = C'*C;
 R = diag([0.3 0.3]);
-% R = 0.3;
-
-[P,F,sys_p] = idare(A,B,Q,R);
-
-I = eye(size(A));
-G = inv((C-D*F)*inv(I-A+B*F)*B+D);
+% % R = 0.3;
+% 
+% [P,F,sys_p] = idare(A,B,Q,R);
+% 
+% I = eye(size(A));
+% G = inv((C-D*F)*inv(I-A+B*F)*B+D);
 
 %% Reference stuff
 N = runtime;
@@ -57,6 +57,9 @@ cvx_begin quiet
 cvx_end
 
 %%
+Q = eye(2);
+R = eye(2);
+P = eye(2);
 % Create symbolic decision variables
 u = sdpvar(repmat(nu,1,N),repmat(1,1,N));
 x = sdpvar(repmat(nx,1,N+1),repmat(1,1,N+1));
@@ -74,7 +77,7 @@ objective = 0;
 % r = [20; 20];
 for k = 1:N-1
     % objective function, Quadratic over the state and input
-    objective = objective + (x{k}-x_r(:,k))'*Q*(x{k}-x_r(:,k)) + (u{k}-u_r(:,k))'*R*(u{k}-u_r(:,k));
+    objective = objective + (y{k}-[30;30])'*Q*(y{k}-[30;30]) + (u{k})'*R*(u{k});
 %     objective = objective + (y{k}-r)'*Q1*(y{k}-r) + u{k}'*R*u{k};
 %     objective = objective + x{k}'*C'*Q1*C*x{k} + u{k}'*(D'*Q1*D+R1)*u{k}...
 %         + x{k}'*C'*Q1*D*u{k} + u{k}'*D'*Q1*C*x{k} ...
@@ -93,7 +96,7 @@ for k = 1:N-1
 end
 
 % The terminal cost
-objective = objective + (x{N}-x_r(:,N))'*P*(x{N}-x_r(:,N));
+objective = objective + (y{N}-[30;30])'*P*(y{N}-[30;30]);
 % objective = objective + x{N}'*C'*P*C*x{N}...
 %     + u{N}'*D'*P*C*x{N}...
 %     + x{N}'*C'*P*D*u{N} + u{N}'*D'*P*D*u{N} - x{N}'*C'*P*r(:,1)...
