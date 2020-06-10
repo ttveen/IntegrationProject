@@ -11,4 +11,5 @@
 - [ ] Spellings-check (read the document)
 - [ ] Reference track for the pole placement controller
 - [x] Check if the LS RMSE is correct. The vectors might be transposed!
-
+- [ ] Q,R and P matrices for MPC need to change (not the same as LQR)
+- [ ] Finish MPC reference tracking 

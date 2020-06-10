@@ -1,0 +1,53 @@
+\subsection{Controller Comparison}
+
+% Try to come up with some methods to systematically compare the performance of the closed-loop systems, not just mention "the pole-placement based controller clearly outperforms the mixed-sensitivity design, see Figure xx". The bare minimum is just to show time-domain data (responses of the closed-loop) recorded during an experiment, for only one type of reference signal. You could expand this for instance:
+
+% In time domain: think of rise time, overshoot, steady state error, (standardized) disturbance rejection. Or experiment with harmonic reference signals and estimate gain and phase lag between reference and output. Experiment with the effect of a reference change on one channel to the other channels (output 1 gets a reference change, output 2 is commanded to stay constant, heater 1 input will increase -- do we see effect on output temperature 2?).
+
+
+
+\subsubsection{Step reference signal}
+% Determine and compare:
+% - [ ] rise time
+% - [ ] overshoot
+% - [ ] steady state error
+% - [ ]
+
+The step responses of the closed loop systems controlled with the pole-placement controller and the MPC are shown in figures \ref{fig:PPexp1} and \ref{fig:MPCstep} respectively.
+
+%table with step data
+
+%!!Ik ben compare plotjes aan het maken in matlab :)!!
+For step references, \textit{Matlab stepinfo()} is able to give the performance criteria
+\begin{table}[]
+    \centering
+    \begin{tabular}{c|c|c|c|c|l}
+         & Pole Placement $y_1$ & MPC $y_1$ & Pole Placement $y_2$ & MPC $y_2$ &  \\
+        \hline
+        Rise time & 241.2694 & 267.9595 & 96.0497 & 99.9105 & s\\
+        Settling time & NaN & 982.8908 & 225.3708 & 453.1025 & s\\
+        Settling Min & 27.0395 & 27.0107 & 27.044 & 27.0773 & $^{\circ}C$\\
+        Settling Max & 32.3151 & 31.7646 & 30.6623 & 30.4406 & $^{\circ}C$\\
+        Overshoot & 7.169 & 5.8820 & 2.2077 & 1.4687 & \%\\
+        Undershoot & 0.0198 & 0 & 0 & 0& \% \\
+        Peak & 32.3151 & 31.7646 & 30.6623 & 30.4406 & $^{\circ}C$\\
+        Peak time & 502.0980 & 504.0990 & 223.0440 & 223.0440 & s 
+    \end{tabular}
+    \caption{Caption}
+    \label{tab:my_label}
+\end{table}
+
+\subsubsection{Sinusoidal reference signal}
+% Compare
+% - [ ] How well does it track the reference signal? give error values maybe of the point in time where both systems have managed to track the reference. 
+% - [ ] reference change effect on one channel to the other channels 
+% - [ ] 
+
+\begin{figure}
+    \centering
+    \includesvg[width=0.8\textwidth]{}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+
+% \subsection{Disturbance}
