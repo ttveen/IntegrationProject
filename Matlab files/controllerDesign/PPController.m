@@ -152,5 +152,5 @@ PPexp = gcf;
 set(PPexp, 'position', get(0, 'ScreenSize'))
 PPexp.Renderer = 'painters';
 saveas(PPexp, '../../Latex/images/Controller/PPexp2', 'svg');
-save('../../Data/PPexp2.mat', 'time', 't1', 't2', 'PPexp', 'u', 'xhat', 'yhat')
+save('../../Data/PPexp2.mat', 'time', 't1', 't2', 'PPexp', 'u', 'xhat', 'yhat','r')
 close gcf
