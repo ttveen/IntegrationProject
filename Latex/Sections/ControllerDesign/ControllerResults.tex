@@ -8,21 +8,23 @@
 
 \subsubsection{Step reference signal}
 % Determine and compare:
-% - [ ] rise time
-% - [ ] overshoot
-% - [ ] steady state error
+% - [x] rise time
+% - [x] overshoot
+% - [x] steady state error
 % - [ ]
 
-The step responses of the closed loop systems controlled with the pole-placement controller and the MPC are shown in figures \ref{fig:PPexp1} and \ref{fig:MPCstep} respectively.
-
-%table with step data
-
-%!!Ik ben compare plotjes aan het maken in matlab :)!!
-For step references, \textit{Matlab stepinfo()} is able to give the performance criteria
-\begin{table}[]
+The step responses of the closed loop systems controlled by the pole-placement controller and the MPC are shown in figure \ref{fig:compStepC}. With corresponding step response performance data in table \ref{tab:stepinfo}, determined by \textit{Matlab stepinfo()}.
+\begin{figure}
     \centering
+    \includesvg[width=0.8\textwidth]{images/controller/compStepC.svg}
+    \caption{Step reference tracking comparison between the pole-placement controller and MPC}
+    \label{fig:compStepC}
+\end{figure}
+\begin{table}[h]
+    \centering
+    \caption{Step reference tracking performance}
     \begin{tabular}{c|c|c|c|c|l}
-         & Pole Placement $y_1$ & MPC $y_1$ & Pole Placement $y_2$ & MPC $y_2$ &  \\
+         & Pole Placement $y_1$ & Pole Placement $y_2$ & MPC $y_1$ & MPC $y_2$ &  \\
         \hline
         Rise time & 241.2694 & 267.9595 & 96.0497 & 99.9105 & s\\
         Settling time & NaN & 982.8908 & 225.3708 & 453.1025 & s\\
@@ -33,21 +35,24 @@ For step references, \textit{Matlab stepinfo()} is able to give the performance 
         Peak & 32.3151 & 31.7646 & 30.6623 & 30.4406 & $^{\circ}C$\\
         Peak time & 502.0980 & 504.0990 & 223.0440 & 223.0440 & s 
     \end{tabular}
-    \caption{Caption}
-    \label{tab:my_label}
+    \label{tab:stepinfo}
 \end{table}
+The MPC controller has a significantly lower rise time compared to the pole-placement controller, with a difference of 145.2197 seconds for Heater 1 and 168.049 seconds for Heater 2. Unlike the table suggests, the pole-placement controller doesn't have a settling time as the system continues to move away from the reference signal after the 1000 second mark, as can be seen in Figure \ref{fig:PPexp1}. The maximum overshoot of the MPC step response is with $\approx 2.2\%$ lower than $0.66 ^{\circ}C$ while the pole-placement controller has a overshoot of $\approx 2.3 ^{\circ}C$. The lower than pole-placement root mean squared (RMS) error of the MPC, found in \ref{sec:polePlacement} and \ref{sec:MPC_Results} respectively, also shows that the it has a step response with an overall smaller difference between the output and reference signal.    
 
 \subsubsection{Sinusoidal reference signal}
 % Compare
 % - [ ] How well does it track the reference signal? give error values maybe of the point in time where both systems have managed to track the reference. 
 % - [ ] reference change effect on one channel to the other channels 
 % - [ ] 
+Figure \ref{fig:compSinC} show the tracking capabilities of both controllers in on figure. The RMS error for the MPC controller is significantly lower than the RMS error for pole placement controller. The MPC controller is able to follow a sinusoidal reference, while the pole placement controller was not. The MPC controller only struggled with frequencies too high for the system dynamics. The system could not increase its temperature fast enough, even though maximum input was provided. Figure \ref{fig:MPCper1} also shows that the controller is able follow different references for the two outputs.
 
 \begin{figure}
     \centering
-    \includesvg[width=0.8\textwidth]{}
-    \caption{Caption}
-    \label{fig:my_label}
+    \includesvg[width=0.8\textwidth]{images/controller/compSinC.svg}
+    \caption{Sinusoidal signal reference tracking comparison between the pole-placement controller and MPC}
+    \label{fig:compSinC}
 \end{figure}
+
+The sinusoidal reference signal in the first subplot (Heater 1) is equal for both controllers but the reference in the second subplot (Heater 2) differs slightly but it is still usable for comparing the tracking capabilities of both controllers.  
 
 % \subsection{Disturbance}

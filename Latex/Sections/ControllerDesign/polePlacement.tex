@@ -2,7 +2,6 @@ After obtaining a system model and a linear Kalman filter, a controller can be d
 \begin{itemize}
     \item A fast rising time
     \item No steady state error
-    \item disturbance rejection
 \end{itemize}
 Since the system is prone to overheating, the system identification was done with restricted input. The controllers should also compute restricted control input:
 \begin{align}
@@ -12,7 +11,7 @@ Since the system is prone to overheating, the system identification was done wit
     
 These restrictions ensure that no damage is done to the system.
 In this chapter the identified model from chapter \ref{sec:kalmanFilter} is used. Since this model is linear, only linear controller will be considered. First, a pole-placement controller is designed, then a model-predictive controller (MPC) is considered. The performance of these controllers will be compared and discussed.
-\subsection{Pole Placement controller}
+\subsection{Pole Placement controller}\label{sec:polePlacement}
 For the pole placement controller, the following state feedback law is considered
 $$
 u(k) = -Fx(k) + Gr(k)

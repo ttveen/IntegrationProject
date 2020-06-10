@@ -56,37 +56,44 @@ Maarten ten Voorde (4590740)\\[1.5cm]	% Author info
 \vfill 
 \end{titlepage}
 
-%%\begin{abstract}
-%%Your abstract.
-%%\end{abstract}
+
+\begin{abstract}
+    This report describes the process of modeling and controlling the Temperature Control Lab (TCL) system \cite{APMonitor}. Several techniques have been used to model the dynamics of the system, including parameter estimation on a non-linear theoretical system model to determine parameters that minimises the error between model output and measurements. Two subspace identification methods (MOESP \cite{doi:10.1080/00207179208934364} ,N4SID \cite{VANOVERSCHEE199475}) have also been used to determine a linear discrete-time system model with good results. A pole-placement controller and MPC have been designed and implemented on the real system which have been able to accurately track a step and/or sinusoidal reference signal. A Kalman filter has been implemented to accurately estimate the full system state as this is required for both controllers.      
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
 
 %%%% SECTIONS
 %% Introduction
 \section{Introduction}
-%\input{Latex/Sections/Introduction/Introduction}
+\input{Latex/Sections/Introduction/Introduction}
 %% Section 1
-% \input{Latex/Sections/Symbols/symbols}
+\input{Latex/Sections/Symbols/symbols}
 \section{Linearity Check}
-% \input{Latex/Sections/Linearity/Linearity}
+\input{Latex/Sections/Linearity/Linearity}
 
 \section{System Identification}
-% \input{Latex/Sections/SYSID/samplingFreq}
-% \input{Latex/Sections/SYSID/systemModel}
-% \input{Latex/Sections/SYSID/leastSquares}
+\input{Latex/Sections/SYSID/samplingFreq}
+\input{Latex/Sections/SYSID/systemModel}
+\input{Latex/Sections/SYSID/leastSquares}
 %%%%%\input{Latex/Sections/SYSID/stateSpace} %NIET NODIG ???
-% \input{Latex/Sections/SYSID/SubID}
-% \input{Latex/Sections/SYSID/comparison}
+\input{Latex/Sections/SYSID/SubID}
+\input{Latex/Sections/SYSID/comparison}
 \newpage
 
 \section{Kalman Filter}
-% \input{Latex/Sections/kalmanFilter/kalmanFilter}
-% \input{Latex/Sections/kalmanFilter/kalmanComparison}
+\input{Latex/Sections/kalmanFilter/kalmanFilter}
+\input{Latex/Sections/kalmanFilter/kalmanComparison}
 
 \section{Controller Design}
 \input{Latex/Sections/ControllerDesign/polePlacement}
 \input{Latex/Sections/ControllerDesign/MPC}
+\clearpage
 \input{Latex/Sections/ControllerDesign/ControllerResults}
-
+ \clearpage
+ \newpage
 \section{Conclusion}
 \input{Latex/Sections/ConclusionDiscussion/Conlcusion}
 \section{Discussion}
@@ -98,8 +105,6 @@ Maarten ten Voorde (4590740)\\[1.5cm]	% Author info
 %%\caption{Sketch of the pendulum}
 %%\label{fig:pendulum}
 %%\end{figure}
-
-
 
 \bibliographystyle{apacite}
 \bibliography{ref.bib}
