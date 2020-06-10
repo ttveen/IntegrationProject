@@ -67,3 +67,18 @@ The closed loop system reaches the reference after approximately 500 seconds, wh
 \end{align}
 will result in inputs over 200, which is far too high. It does not only exceed the limitations set on the control effort, it also exceeds the possible input (100). This will cause input saturation and integrator windup.\\
 Pole placement controller design is easy in its principle, but limited in its capabilities. Choosing $F$ can also be done by minimising a cost function. This feedback control approach be considered in the following section.
+
+Besides a step reference, a harmonic signal was used as reference. The result is shown in Figure \ref{fig:PPper}. The controller is clearly not able to follow the reference. Both heaters are far above the reference. The control input does stay within the bounds, except when the Kalman filter is converging.
+
+\begin{figure}
+    \centering
+    \includesvg{images/controller/PPexp2}
+    \caption{Pole Placement, harmonic signal tracking}
+    \label{fig:PPper}
+\end{figure}
+The RMS error for both experiments are
+\begin{align*}
+    \epsilon_{\text{PP,step}} &= \begin{bmatrix} 4.0443 & 4.2483\end{bmatrix}
+    \epsilon_{\text{PP,harmonic}} &= \begin{bmatrix} 10.0979 & 7.1562 \end{bmatrix}    
+\end{align*}
+

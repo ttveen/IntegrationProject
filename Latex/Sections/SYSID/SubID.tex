@@ -80,7 +80,7 @@ From figure \ref{fig:SingularY0sN} it is determined, by the amount of distinct s
 \begin{figure}[ht]
     \centering
     \includesvg[width=0.8\textwidth]{images/SYSID/singularVal.svg}
-    \caption{Singular values of Y0sN}
+    \caption{Singular values of $Y_{0,s,N}$}
     \label{fig:SingularY0sN}
 \end{figure}
 \begin{figure}[ht]
@@ -91,6 +91,10 @@ From figure \ref{fig:SingularY0sN} it is determined, by the amount of distinct s
 \end{figure}
 From figure \ref{fig:Comp_subID} it can be seen that the model determined with MOESP, given the same input, mostly coincides with the experiment data. It is even able to match well with the output of Heater 2 which has, as seen in the figure, more measurement noise than Heater 1.
 
+The RMS error of the MOESP model, on the data it was fitted to, is
+$$
+\epsilon_{\text{MOESP}} = \begin{bmatrix} 1.7355 & 1.8179\end{bmatrix}
+$$
 % The relative error between the output of the model determined with subspace identification and the experiment data can be calculated with
 % $$
 % Relative error(k) = \frac{|y_{exp}-y_{subID}|}{|y_{exp}|}

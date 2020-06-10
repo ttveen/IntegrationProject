@@ -52,7 +52,12 @@ $$
 $$
 Figure \ref{fig:lsqfit} shows that the obtained model does not represent the original system. $\hat{x}$ has some unexpected values, such as the negative parameters. This would suggest that the heat flows from cold to hot, which is obviously incorrect. The reason for such an under performing fit might be the the original theoretical model (equations \ref{eq:nonlin1} to \ref{eq:nonlin4}), or limitation in the parameters that can be estimated. It could be that $\tau$ and $\alpha_i$ are very different than was initially assumed, but several different values for these parameters were chosen, without success.
 
-The fitted model does show peaks in the temperatures corresponding to the input, but the temperature does not deviate much from its steady state around $29^{\circ}$. Additionally, the two temperatures of the two sensors appear to track one another closely, while the measurement do not. This implies that the model has more heat transfer between the heaters than necessary. This is represented by the high values for $\hat{x}_3$ and $\hat{x}_4$. $\hat{x}_5$ is close to an expected value, using the parameters from table \ref{tab:theModelPara}, $\frac{1}{mC_p} = 20$.
+The fitted model does show peaks in the temperatures corresponding to the input, but the temperature does not deviate much from its steady state around $29^{\circ}C$. Additionally, the two temperatures of the two sensors appear to track one another closely, while the measurement do not. This implies that the model has more heat transfer between the heaters than necessary. This is represented by the high values for $\hat{x}_3$ and $\hat{x}_4$. $\hat{x}_5$ is close to an expected value, using the parameters from table \ref{tab:theModelPara}, $\frac{1}{mC_p} = 20$.
+
+To quantify the performance of the identified model, the root mean squared (RMS) error will be used. The RMS will also be used to indicate performance troughout this document. The RMS of the linear least square model is
+$$
+\epsilon_{\text{LSQ}} = RMS(\begin{bmatrix} y_{1,LSQ} - y_{1,measured} & y_{2,LSQ} - y_{2,measured} \end{bmatrix}) = \begin{bmatrix} 16.1636 & 10.9292 \end{bmatrix}
+$$
 
 The obtained nonlinear model was integrated using \textit{Matlab ODE45()} 
 \begin{figure}
