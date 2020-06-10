@@ -82,6 +82,12 @@ plot(t,TC1)
 plot(t,TC2)
 legend({'Heater 1', 'Heater 2','H1, lsq fit','H1, lsq fit'},'Location','northeast')
 saveas(stepBlock,'..\..\latex\images\SYSID\leastSquaresFit','svg')
+
+
+%% save workspace variables
+save('../../Data/LeastSquares.mat', 't', 'TC1', 'TC2', 'lsq');
+
+%% function 
 function dx = heaters(t,x,u1,u2,lsq, alpha1, alpha2, tau)
     sigma = 5.67e-8;
     %tau = 23;

@@ -23,7 +23,7 @@ time = time.long;
 % Hankel matrix parameters
 Ly = size(y,1);
 Lu = size(u,1);
-s = 150;
+s = 60;
 n = 6;
 N = size(y,2) - 2*s + 1;
 
@@ -110,6 +110,8 @@ SID.Bt = Bt;
 SID.Ct = Ct;
 SID.Dt = Dt;
 SID.xt0 = xt0;
+SID.ys = ys;
+SID.us = u;
 
 save('..\..\Data\SID.mat','SID');
 %% Plotting

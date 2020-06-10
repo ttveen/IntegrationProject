@@ -102,6 +102,8 @@ NSID.Bt = Bt;
 NSID.Ct = Ct;
 NSID.Dt = Dt;
 NSID.Ks = Ks;
+NSID.ys = ys;
+NSID.us = u;
 
 save('..\..\Data\NSID.mat','NSID');
 
