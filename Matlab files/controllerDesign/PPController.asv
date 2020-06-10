@@ -35,10 +35,10 @@ r = [35 + 3*sin((0:1:runtime-1)/100); 30 + 3*cos((0:1:runtime-1)/100)];
 %% Determine gain
 % p = [-0.9 -0.8 -0.7 0.7 0.8 0.9]; % stable discrete poles
 % p = [-0.3 -0.2 -0.1 0.1 0.2 0.3];
-p = linspace(0.987,0.999,6);
+p = linspace(0.98,0.99,6);
 
 
-Kx = place(A,B,p); % pole placement
+%Kx = place(A,B,p); % pole placement
 %Kr = inv(C/(eye(size(A))-A+B*Kx)*B); % reference gain
 %For LQR control
 %Kx = [-22.3112995358586,-2.34395829803522,1.44421673670272,0.463052019339851,-0.586068184551735,0.0519736559802679;-16.2696117036986,2.56721439335664,1.24800644905354,1.20426827073047,-0.460281038324108,0.0545396527165367];
@@ -78,25 +78,23 @@ sgtitle('Pole Placement step reference tracking simulation')
 %% Create figure
 figure('Name','PPexp')
 fig1a = subplot(2,1,1);
-aniT1 = animatedline(fig1a,'Color','r','Marker','.','Linestyle','none');
-aniT2 = animatedline(fig1a,'Color','b','Marker','.','Linestyle','none');
-aniK1 = animatedline(fig1a,'Color','r','Marker','+','Linestyle','none');
-aniK2 = animatedline(fig1a,'Color','b','Marker','+','Linestyle','none');
+aniT1 = animatedline(fig1a,'Color','r','Marker','.');
+aniT2 = animatedline(fig1a,'Color','b','Marker','.');
+aniK1 = animatedline(fig1a,'Color','r','Marker','+');
+aniK2 = animatedline(fig1a,'Color','b','Marker','+');
 hold on
 xlabel('Time in s')
 ylabel({'Temperature in $^{\circ}C$'},  'Interpreter', 'Latex')
 title('Temperature')
 axis([0 runtime 0 35])
-fig1b = subplot(2,1,2)
-aniu1 = animatedline(fig1b,'Color','r','Marker','.','Linestyle','none');
-aniu2 = animatedline(fig1b,'Color','b','Marker','.','Linestyle','none');
+fig1b = subplot(2,1,2);
+aniu1 = animatedline(fig1b,'Color','r','Marker','.');
+aniu2 = animatedline(fig1b,'Color','b','Marker','.');
 xlabel('Time in s')
 ylabel('Input level',  'Interpreter', 'Latex')
 title('Input')
 axis([0 runtime -5 50])
 hold on
-plot(fig1a,(0:1:runtime-1),r(1,:),'r--')
-plot(fig1a,(0:1:runtime-1),r(2,:),'b--')
 %Measure the corresponding output
 led(1);
 %% Run Experiment
@@ -146,11 +144,9 @@ turnOff(a)
 led(0)
 time.PP(end) = [];
 
-legend(fig1a,{'$T_{C1,reference}$','$T_{C1,reference}$','$T_{C1,measured}$','$T_{C2,measured}$','$T_{C1,estimate}$','$T_{C2,estimate}$'},'Interpreter','latex','Location','southeast','FontSize', 20)
-legend(fig1b,{'$u_1$', '$u_2$'}, 'Interpreter','latex','FontSize', 20)
+legend(fig1a,{'$T_{C1,measured}$','$T_{C2,measured}$','$T_{C1,estimate}$','$T_{C2,estimate}$'},'Interpreter','latex')
+legend(fig1b,{'$u_1$', '$u_2$'}, 'Interpreter','latex')
 PPexp = gcf;
-set(PPexp, 'position', get(0, 'ScreenSize'))
 PPexp.Renderer = 'painters';
-saveas(PPexp, '../../Latex/images/Controller/PPexp2', 'svg');
-save('../../Data/PPexp2.mat', 'time', 't1', 't2', 'PPexp', 'u', 'xhat', 'yhat')
-close gcf
+saveas(PPexp, '../../Latex/images/Controller/LQRexp1', 'svg');
+save('../../Data/LQRexp1.mat', 'time', 't1', 't2', 'PPexp', 'u', 'xhat', 'yhat')
