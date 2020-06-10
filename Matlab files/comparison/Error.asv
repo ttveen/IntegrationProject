@@ -18,29 +18,24 @@ y_moesp = SID.ys;
 load('../../Data/NSID.mat');
 y_nsid = NSID.ys;
 
+% PP experiment 2
+load('../../Data/PPexp2.mat');
+y_exp_pp2 = [t1.PP; t2.PP];
+y_pp2 = PPexp2.yhat;
+
 
 %% Calculate errors
+N = size(y_exp,2);
+
 % root mean squared error (RMSE)
-RMSE_moesp = sqrt(mean(sum((y_exp - y_moesp).^2)));
-RMSE_nsid = sqrt(mean((y_exp - y_nsid).^2));
+RMSE_moesp_y1 = sqrt((1/N)*(sum((y_exp(1,:) - y_moesp(1,:)).^2)))
+RMSE_moesp_y2 = sqrt((1/N)*(sum((y_exp(2,:) - y_moesp(2,:)).^2)))
+RMSE_moesp = [RMSE_moesp_y1; RMSE_moesp_y2];
 
-figure('Name','Root mean squared error (RMSE)')
-title('Root mean squared error (RMSE)');
-xlabel('Time in s')
-ylabel('RMSE')
-hold on
-plot(time,RMSE_moesp,'r');
-plot(time,RMSE_nsid,'b');
-hold off
-legend({'RMSE MOESP','RMSE NSID'})
+n = 400;
+RMSE_nsid_y1 = sqrt((1/N)*(sum((y_exp(1,1:n) - y_nsid(1,1:n)).^2)))
+RMSE_nsid_y2 = sqrt((1/N)*(sum((y_exp(2,1:n) - y_nsid(2,1:n)).^2)))
+RMSE_nsid = [RMSE_nsid_y1; RMSE_nsid_y2];
 
+RMSE_pp2_y1 = 
 
-% % relative error
-% RE_moesp = abs(y_exp-y_moesp)./abs(y_exp);
-% RE_nsid = abs(y_exp-y_nsid)./abs(y_exp);
-% 
-% figure
-% hold on
-% plot(time,RE_moesp,'r');
-% plot(time,RE_nsid,'b');
-% hold off
