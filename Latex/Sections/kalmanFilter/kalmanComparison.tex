@@ -3,15 +3,24 @@ From figures \ref{fig:comp_Kalman1} and \ref{fig:comp_Kalman2} it can be seen th
 
 Note that the initial estimates were intentionally set to $T_{C1,measured} = T_{C1,measured} = 0$. There is a significant difference between the initial estimates and the initial temperature of the sensors (room temperature). Choosing this difference allows for the inspection of the convergence time. Performance will increase when the initial conditions of the estimate are closer to the real conditions.
 
+The RMS error for both experiments, with and without convergance, are
+The RMS of the N4SID model is
+\begin{align*}
+\epsilon_{\text{KF, experiment 1}} = \begin{bmatrix} 3.6262 & 4.1523 \end{bmatrix}\\
+\epsilon_{\text{KF, eperiment 2}} = \begin{bmatrix} 3.0735 & 4.0106 \end{bmatrix}\\
+\epsilon_{\text{KF, } t\geq40,\text{experiment 1}} = \begin{bmatrix} 0.7861 & 1.5044 \end{bmatrix}\\
+\epsilon_{\text{KF, } t\geq40, \text{experiment 2}} = \begin{bmatrix} 0.6666 & 1.4358 \end{bmatrix}\\
+\end{align*}
+These errors are higher on the second output than the first. For the second output, the RMS errors of the two experiments are significantly higher than the RMS error on the original fitting data. This might indicate that the model was over fitting on the noise of the second output. This is plausible, since the second output appears to more noisy than the first output.
 \begin{figure}
     \centering
     \includesvg[width=\textwidth]{images/kalmanTest/kalmanTest1.svg}
-    \caption{Comparison of the measured output and the estimated output}
+    \caption{Comparison of the measured output and the estimated output, experiment 1}
     \label{fig:comp_Kalman1}
 \end{figure}
 \begin{figure}
     \centering
     \includesvg[width=\textwidth]{images/kalmanTest/kalmanTest2.svg}
-    \caption{Comparison of the measured output and the estimated output}
+    \caption{Comparison of the measured output and the estimated output, experiment 2}
     \label{fig:comp_Kalman2}
 \end{figure}

@@ -50,6 +50,20 @@ which results in the estimated system $\hat{A}$, $\hat{B}$, $\hat{C}$ and $\hat{
     \begin{bmatrix} \hat{W}_{s,1,N-1} \\ \hat{V}_{s,1,N-1} \end{bmatrix} &= \begin{bmatrix} \hat{X}_{s+1,N} \\ \hat{Y}_{s,1,N-1} \end{bmatrix} - \begin{bmatrix} \hat{A} & \hat{B}\\ \hat{C} & \hat{D} \end{bmatrix} \begin{bmatrix} \hat{X}_{s,N-1} \\ \hat{U}_{s,1,N-1} \end{bmatrix} \\
     \begin{bmatrix} \hat{Q} & \hat{S}\\ \hat{S}^T & \hat{R} \end{bmatrix} &= \lim_{N \xrightarrow{}\infty} \frac{1}{N} \begin{bmatrix} \hat{W}_{s,1,N} \\ \hat{V}_{s,1,N} \end{bmatrix} \begin{bmatrix} \hat{W}_{s,1,N}^T & \hat{V}_{s,1,N}^T \end{bmatrix}
 \end{align*}
+The result of this identified model on the data it was fitted to can be seen in Figure \ref{fig:compN4SID}. The state was initialised on $y=[0, 0]^T$, and the converges to the measured data. The RMS of the N4SID model is
+$$
+\epsilon_{\text{N4SID}} = \begin{bmatrix} 1.8094 & 1.8502 \end{bmatrix}
+$$
+These values are higher than for the MOESP method. This is caused by the convergence of the filter. If the RMS is taken, starting after converging, so $t\geq400s$
+$$
+\epsilon_{\text{N4SID, }t\geq400} = \begin{bmatrix} 0.8508 & 0.8209 \end{bmatrix}
+$$ 
+\begin{figure}
+    \centering
+    \includesvg{images/SYSID/compN4SID.svg}
+    \caption{The modeled N4SID output compared to the measurement data}
+    \label{fig:compN4SID}
+\end{figure}
 
 
      

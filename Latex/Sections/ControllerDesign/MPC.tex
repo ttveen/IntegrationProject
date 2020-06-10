@@ -19,15 +19,18 @@ Parameter tuning for LQR is intuitive. If a fast convergence of the state is des
 $$
 Q = C'*C \text{ and } R = 0.3I_2
 $$
-The reference is again $30^{\circ}C$. The system takes up to approximately 300 seconds to reach the reference signal, which is faster than the pole placement controller. There is a slight steady state error of around  $1^{\circ}C$. During the convergence of the Kalman filter, the inputs exceeds the bound. The inputs are first as high as 60\%, and then drop to below zero. After the steady state has been reached, the control effort remains constant. This controller does not satisfy the conditions. The LQR controllor can be used as a basis for the MPC controller, where we can put hard constraints on the input.
-\begin{figure}
+The reference is again $30^{\circ}C$. The system takes up to approximately 300 seconds to reach the reference signal, which is faster than the pole placement controller. There is a slight steady state error of around  $1^{\circ}C$. During the convergence of the Kalman filter, the inputs exceeds the bound. The inputs are first as high as 60\%, and then drop to below zero. After the steady state has been reached, the control effort remains constant. This controller does not satisfy the conditions. The LQR controllor can be used as a basis for the MPC controller, where we can put hard constraints on the input. The RMS of this experiment is
+\begin{align*}
+    \epsilon_{\text{LQR,step}} &= \begin{bmatrix} 3.0733 & 3.4209\end{bmatrix}\\
+\end{align*}
+\begin{figure}[ht]
     \centering
     \includesvg[width = 0.8\textwidth]{images/controller/LQRexp1.svg}
     \caption{Linear Quadratic controller experiment}
     \label{fig:LQR1}
 \end{figure}
 
-\subsubsection{MPC Design}
+\subsubsection{MPC Design}\label{MPC_Design}
 Where LQR minimises the cost function \ref{eq:LQRcost} for a infinite horizon, a MPC controller minimises a similar cost function for a finite horizon. The cost function for horizon $N$ is
 \begin{align}
     V_N(x_0,u_N) &= \sum_{k=0}^{N-1}[x^T(k)Qx(k) + u^T(k)Ru(k)] +  \label{eq:MPCcost}\\
@@ -39,25 +42,56 @@ A disadvantage of MPC is the computation time required. After every iteration, t
 
 For MPC, the YALMIP toolbox for Matlab was used \cite{Lofberg2004}.
 
-\subsection{Results}
+\subsection{MPC Reference tracking}
+In order for the MPC to track a reference signal the objective function needs to penalize the difference between the output and the reference signal. This results in a objective function of the form
+\begin{align}
+    V_N(x_0,u_N,r_N) &= \sum_{k=0}^{N-1}[(y(k)-r(k))^TQ(y(k)-r(k)) + u^T(k)Ru(k)] + V_f(y(N),r(N)) \label{eq:MPCcost}\\
+    V_f(y(N),r(N)) &= (y(N)-r(N))^TP(y(N)-r(N)) \nonumber \\
+    \text{with, } y(k) &= Cx(k)+Du(k) \nonumber
+\end{align}
 
-\begin{figure}
+\newpage
+\subsection{Results}
+The MPC controller has been tested with a step reference (fig: \ref{fig:MPCstep}) and two sinusoidal reference experiments (fig: \ref{fig:MPCper1},\ref{fig:MPCper2}). These experiments show that the MPC is capable of generating inputs that enable the system to track a (non)constant reference signal, with a faster converging/settling time than that of the pole placement and LQR controller, while still satisfying its input and output constraints. In Figure \ref{fig:MPCper1} two different low frequency sinusoidal reference signals have been used for each heater, which the MPC is able to accurately track for both heaters. When the frequency of the sinusoidal signal of heater 1 is increased beyond a certain value, the MPC is not able to track the reference signal as well and often undershoots the peaks, shown if Figure \ref{fig:MPCper2}. This is most likely because of the slow system dynamics and input constraints which prevent the controller to implement higher inputs which could track the reference better. Additionally, the system can only cool be convection and radiation to the ambient environment. The system cannot cool fast enough to track the reference.
+
+The RMS error of the three different experiments are
+\begin{align*}
+    \epsilon_{\text{MPC,step}} &= \begin{bmatrix} 2.8479 & 3.3373\end{bmatrix}\\
+    \epsilon_{\text{MPC,harmonic 1}} &= \begin{bmatrix} 4.6828 & 4.3659 \end{bmatrix}\\
+    \epsilon_{\text{MPC,harmonic 2}} &= \begin{bmatrix} 6.5451 & 4.7631\end{bmatrix}
+\end{align*}
+Note that these are including the convergence time of the filter. The inability to follow the reference of the second harmonic experiment is reflected in the higher RMS on the first entry (Heater 1).
+
+% \subsubsection{Step reference} \label{MPCstepRef}
+\begin{figure}[ht]
     \centering
     \includesvg[width = \textwidth]{images/controller/MPCstep.svg}
-    \caption{Caption}
-    \label{fig:my_label}
+    \caption{MPC Step reference experiment}
+    \label{fig:MPCstep}
 \end{figure}
 
-\begin{figure}
-    \centering
-    \includesvg[width=0.8\textwidth]{images/controller/MPCcompTime.svg}
-    \caption{Caption}
-    \label{fig:my_label}
-\end{figure}
+% \subsubsection{Sinusoidal references} \label{MPCsinRef}
 
-\begin{figure}
+\begin{figure}[ht]
     \centering
     \includesvg[width = \textwidth]{images/controller/MPCper1.svg}
-    \caption{Caption}
-    \label{fig:my_label}
+    \caption{MPC sinusoidal reference experiment 1}
+    \label{fig:MPCper1}
 \end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includesvg[width = \textwidth]{images/controller/MPCper2.svg}
+    \caption{MPC sinusoidal reference experiment 2}
+    \label{fig:MPCper2}
+\end{figure}
+
+% \subsubsection{Computation time}
+As discussed in section \ref{MPC_Design} the computation time of the MPC needs to be lower than the sampling time of the system in order to run this controller on-line. Figure \ref{fig:MPCcompTime} shows the time it took for the MPC to determine the next optimal input for every iteration in the step reference experiment shown in figure \ref{fig:MPCstep}. Which was, because of a single outlier, less then 0.4 seconds which is well below the system sampling time of 1 second. 
+\begin{figure}[ht]
+    \centering
+    \includesvg[width=0.8\textwidth]{images/controller/MPCcompTime.svg}
+    \caption{MPC computation time step reference experiment}
+    \label{fig:MPCcompTime}
+\end{figure}
+
