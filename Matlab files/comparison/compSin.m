@@ -51,7 +51,7 @@ ylim([0 50]);
 
 hold on
 % plot y data and reference 
-plot(time,y_pp2(2,:),'r','MarkerIndices',1:20:length(y_pp2(2,:)));
+plot(time,y_pp2(2,:),'r+','MarkerIndices',1:20:length(y_pp2(2,:)));
 plot(time,y_MPCper1(2,:),'b')
 plot(time,y_pp2_r(2,:),'r--');
 plot(time,y_MPCper1_r(2,:),'b:');
