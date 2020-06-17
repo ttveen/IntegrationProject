@@ -34,10 +34,10 @@ ylim([0 50]);
 
 hold on
 % plot y data and reference
-plot(time,y_pp2(1,:),'r');
+plot(time,y_pp2(1,:),'r+','MarkerIndices',1:20:length(y_pp2(2,:)));
 plot(time,y_MPCper1(1,:),'b');
 plot(time,y_pp2_r(1,:),'r--');
-plot(time,y_MPCper1_r(1,:),'b--');
+plot(time,y_MPCper1_r(1,:),'b:');
 hold off
 
 legend({'y_{1,PP}','y_{1,MPC}'},'Location','southeast')
@@ -51,10 +51,10 @@ ylim([0 50]);
 
 hold on
 % plot y data and reference 
-plot(time,y_pp2(2,:),'r');
+plot(time,y_pp2(2,:),'r','MarkerIndices',1:20:length(y_pp2(2,:)));
 plot(time,y_MPCper1(2,:),'b')
 plot(time,y_pp2_r(2,:),'r--');
-plot(time,y_MPCper1_r(2,:),'b--');
+plot(time,y_MPCper1_r(2,:),'b:');
 hold off
 
 legend({'y_{2,PP}','y_{2,MPC}'},'Location','southeast')

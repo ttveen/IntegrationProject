@@ -40,7 +40,7 @@ ylim([0 35]);
 
 hold on
 % plot y data and reference
-plot(time,y_pp1(1,:),'r');
+plot(time,y_pp1(1,:),'r+','MarkerIndices',1:20:length(y_pp1(1,:)));
 plot(time,y_MPCstep(1,:),'b');
 plot(time,r(1,:),'k:');
 
@@ -58,7 +58,7 @@ ylim([0 35]);
 
 hold on
 % plot y data and reference 
-plot(time,y_pp1(2,:),'r');
+plot(time,y_pp1(2,:),'r+','MarkerIndices',1:20:length(y_pp1(2,:)));
 plot(time,y_MPCstep(2,:),'b')
 plot(time,r(2,:),'k:');
 hold off
