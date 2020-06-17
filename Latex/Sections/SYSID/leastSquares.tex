@@ -1,5 +1,5 @@
 \subsection{Linear least squares fit}
-The linear least squares approach can be used to create a model from the input and output data. The aim is to find a model that minimised the difference between the measuremnts, and the predicted measurements for the model. The following least squares problem is proposed:
+The linear least squares approach can be used to create a model from the input and output data. The aim is to find a model that minimises the difference between the measurents, and the predicted measurements for the model. The following least squares problem is proposed:
 \begin{align}
     \displaystyle \min_{x} &||y(k)-\hat{y}(k,x)|| \nonumber \\
     \displaystyle \min_{x} &||y(k)-F(k)x||\label{eq:leastsquarescost}
@@ -46,7 +46,7 @@ Equations \ref{eq:leastsquares1} and \ref{eq:leastsquares2} can be expanded so t
 $\hat{x}$ contains the parameters that minimise the error, and thus should give the optimal fit with respect to the cost function \ref{eq:leastsquarescost}.
 
 \subsection{Linear least squares model validation}
-The obtained model, using the least squares method, was fitted to the measurements shown in figure \ref{fig:lsqfit}. The figure also shows the fitted model. For the fit, the following parameters were used: $\alpha_1 = 0.01 \frac{W}{\%}$, $\alpha_2 = 0.0075 \frac{W}{\%}$ and $\tau = 12$. These parameters resulted in least squares solution
+The obtained model, using the least squares method, was fitted to the measurements shown in Figure \ref{fig:lsqfit}. The figure also shows the fitted model. For the fit, the following parameters were used: $\alpha_1 = 0.01 \frac{W}{\%}$, $\alpha_2 = 0.0075 \frac{W}{\%}$ and $\tau = 12$. These parameters resulted in least squares solution
 $$
     \hat{x} = \begin{bmatrix} -2.57 & 0.43 & 1.20 & -0.144 & 19.64\end{bmatrix}^T
 $$
@@ -58,7 +58,6 @@ To quantify the performance of the identified model, the root mean squared (RMS)
 $$
 \epsilon_{\text{LSQ}} = RMS(\begin{bmatrix} y_{1,LSQ} - y_{1,measured} & y_{2,LSQ} - y_{2,measured} \end{bmatrix}) = \begin{bmatrix} 16.1636 & 10.9292 \end{bmatrix}
 $$
-
 The obtained nonlinear model was integrated using \textit{Matlab ODE45()} 
 \begin{figure}
     \centering

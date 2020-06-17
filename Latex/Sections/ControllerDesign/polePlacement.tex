@@ -8,9 +8,14 @@ Since the system is prone to overheating, the system identification was done wit
     0\leq u_1 \leq 50 \label{eq:controleffort1} \\
     0\leq u_2 \leq 50 \label{eq:controleffort2}
 \end{align}
-    
-These restrictions ensure that no damage is done to the system.
-In this chapter the identified model from chapter \ref{sec:kalmanFilter} is used. Since this model is linear, only linear controller will be considered. First, a pole-placement controller is designed, then a model-predictive controller (MPC) is considered. The performance of these controllers will be compared and discussed.
+These restrictions ensure that no damage is done to the system. 
+In this chapter the identified model from chapter \ref{sec:kalmanFilter} is used. Since this model is linear, only linear controller will be considered. First the rank of the controllability matrix is inspected. The singular values are
+$$
+\Sigma_{\text{ctrb}} = \text{diag}(\begin{bmatrix} 0.0092 & 0.00199 & 0.0011 & 9.50\times10^{-5} & 2.66\times10^{-5} & 2.14\times10^{-8}\end{bmatrix})
+$$
+The latter states have low singular values, so they are more difficult to control. All the eigenvalues of $A$ are less than one, so the system is stable. This implies that, whilst difficult to control, the states will not diverge.
+
+A pole-placement controller is designed, then a model-predictive controller (MPC) is considered. The performance of these controllers will be compared and discussed.
 \subsection{Pole Placement controller}\label{sec:polePlacement}
 For the pole placement controller, the following state feedback law is considered
 $$
@@ -53,7 +58,7 @@ Choosing fast poles lead to faster dynamics, which is desirable, since it reduce
 \begin{align}
     (A-BF)_{poles} = \begin{bmatrix} 0.9870 & 0.9894 & 0.9918 & 0.9942 & 0.9966 & 0.9999 \end{bmatrix} \label{eq:PPpoles1}
 \end{align}
-Note that these poles are rather close to $1$, and thus very slow. The results of an experiment with these closed loop poles are shown in figure ... . The reference is a static signal $r = 30^{\circ}C$. In the first 50 seconds, the observer dynamics can be seen. After the observer transient has died out, the controller dynamics can be seen. The estimated state slowly approaches the reference signal, and overshoots it slightly. The system outputs continue to oscillate around the $30^{\circ}C$, but never reach it both at the same time. An explanation for this could be outside disturbances, or errors in the identified model. After 2000 seconds, the system surprisingly heats up again. A cause might be that there are some very slow dynamics, or some external disturbances, for which the controller overcompensates.
+Note that these poles are rather close to $1$, and thus very slow. The results of an experiment with these closed loop poles are shown in Figure \ref{fig:PPexp1} . The reference is a static signal $r = 30^{\circ}C$. In the first 50 seconds, the observer dynamics can be recognised. After the observer transient has died out, the controller dynamics can be observed. The estimated state slowly approaches the reference signal, and overshoots it slightly. The system outputs continue to oscillate around the $30^{\circ}C$, but never reach it both at the same time. An explanation for this could be outside disturbances, or errors in the identified model. After 2000 seconds, the system surprisingly heats up again. A cause might be that there are some very slow dynamics, or some external disturbances, for which the controller overcompensates.
 \begin{figure}
     \centering
     \includesvg{images/controller/PPexp1.svg}

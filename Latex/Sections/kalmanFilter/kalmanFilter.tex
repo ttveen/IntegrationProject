@@ -1,5 +1,5 @@
 \label{sec:kalmanFilter}
-To control a dynamic system, it is important to know the states of the system. In case of the Temperature Control Lab, only two measurements are done. The model obtained in the previous has a higher order, which implies that some states are not measured. The unmeasured states can be estimated using a linear observer. The observer estimates the states using the measured inputs. The estimated states converge to the actual states asymptotically.
+To control a dynamic system, it is important to know the states of the system. In case of the Temperature Control Lab, only two measurements are done. The model obtained in the previous has a higher order, which implies that some states are not measured. Note that, since the identified states do not have a physical meaning, the states are dircetly measured. The unmeasured states can be estimated using a linear observer. The observer estimates the states using the measured inputs. The estimated states converge to the actual states asymptotically.
 In the presence of either measurement or process noise, a Kalman filter is often used \cite{kalmanFilter}. The Kalman filter is a linear observer that minimises the covariance of the estimation error. The Kalman filter for a LTI system \cite[p.~162]{FilteringIdentification}
 \begin{align*}
     x(k+1) &= Ax(k) +Bu(k) + w(k)\\
