@@ -7,10 +7,10 @@
 - [x] Describe the symbols (symbol list)
 - [x] Discussion
 - [x] Conclusion
-- [ ] Abstract
-- [ ] Spellings-check (read the document)
-- [ ] Reference track for the pole placement controller
+- [x] Abstract
+- [x] Spellings-check (read the document)
+- [x] Reference track for the pole placement controller
 - [x] Check if the LS RMSE is correct. The vectors might be transposed!
-- [ ] Q,R and P matrices for MPC need to change (not the same as LQR)
-- [ ] Finish MPC reference tracking 
-- [ ] fix the placement of the figures
+- [x] Q,R and P matrices for MPC need to change (not the same as LQR)
+- [x] Finish MPC reference tracking 
+- [x] fix the placement of the figures
