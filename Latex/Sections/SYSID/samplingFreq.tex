@@ -3,8 +3,8 @@
 \begin{figure}[ht]
     \centering
     \includesvg[width=0.8\textwidth]{images/SYSID/stepResponse.svg}
-    \caption{Caption}
-    \label{fig:my_label}
+    \caption{Open-loop step response of the system with an input of 50\%}
+    \label{fig:stepResponse1}
 \end{figure}
 
 A good choice of the sampling frequency is necessary to fully capture the system's output.
@@ -20,15 +20,16 @@ $$
 $$
 where T is the interval between about eight sampled points on the rise time which is approximately sampling at $10\omega_B$. $\omega_B$ can thus be estimated by rewriting the above relationship and substituting $T$. \\
 
-\noindent The results for both heaters can be found in table \ref{Tab:stepInfo}.
+\noindent The results for both heaters can be found in table \ref{Tab:stepInfo}. These values have been derived from Figure \ref{fig:stepResponse1}.
 
 \begin{table}[ht]
 \centering
+\caption{Open-loop step response information}
 \begin{tabular}{lllll}
  & Steady State ($^{\circ}C$) & Rise Time (s) & $\omega_B$ (rad/s) & $\omega_S$ (rad/s) \\ \cline{2-5} 
 Heater 1 & 67.79 & 318 & 0.016 & 0.16 \\
 Heater 2 & 57.04 & 357 & 0.014 & 0.14
 \end{tabular}
-\caption{Step response info}
 \label{Tab:stepInfo}
 \end{table}
+From these results it can be seen that taking a measurement every $T_{s,1} = \frac{2\pi}{\omega_{s,1}} \approx 39$ seconds for Heater 1 and $T_{s,2} = \frac{2\pi}{\omega_{s,2}} \approx 45$ seconds for Heater 2 should result in the system's output to be fully captured. In the following system identification methods a sampling time of 1 second has been used to record the experiment data. The sampling time can then be decreased in a later stage if necessary by sampling the recorded data itself. 

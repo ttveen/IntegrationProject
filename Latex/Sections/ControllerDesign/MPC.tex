@@ -17,7 +17,7 @@ P = APA^T + Q - (S+APC^T)(CPC^T+T)^{-1}(S+APC^T)^T \label{eq:LQRricatti}
 \end{equation}
 Parameter tuning for LQR is intuitive. If a fast convergence of the state is desired, choose a large $Q$ matrix. If large control efforts are undesirable, choose a large $R$ matrix. Figure \ref{fig:LQR1} shows the controller performance for parameters
 $$
-Q = C'*C \text{ and } R = 0.3I_2
+Q = C^TC \text{ and } R = 0.3I_2
 $$
 The reference is again $30^{\circ}C$. The system takes up to approximately 300 seconds to reach the reference signal, which is faster than the pole placement controller. There is a slight steady state error of around  $1^{\circ}C$. During the convergence of the Kalman filter, the inputs exceeds the bound. The inputs are first as high as 60\%, and then drop to below zero. After the steady state has been reached, the control effort remains constant. This controller does not satisfy the conditions. The LQR controllor can be used as a basis for the MPC controller, where we can put hard constraints on the input. The RMS of this experiment is
 \begin{align*}
@@ -53,9 +53,9 @@ This is a modified version of the cost function \ref{eq:MPCcost}. Since the outp
 \subsection{Results}\label{sec:MPC_Results}
 The MPC controller has been tested with a step reference (fig: \ref{fig:MPCstep}) and two sinusoidal reference experiments (fig: \ref{fig:MPCper1},\ref{fig:MPCper2}). For the parameters in \ref{eq:MPCcost2}, the following values were used
 \begin{align*}
-    Q = I_2
-    R = 0.0001I_2
-    P = I_2
+    Q = I_2\\
+    R = 0.0001I_2\\
+    P = I_2\\
     N = 80
 \end{align*}
 These experiments show that the MPC is capable of generating inputs that enable the system to track a (non)constant reference signal, with a faster converging/settling time than that of the pole placement and LQR controller, while still satisfying its input and output constraints. In Figure \ref{fig:MPCper1} two different low frequency sinusoidal reference signals have been used for each heater, which the MPC is able to accurately track for both heaters. When the frequency of the sinusoidal signal of heater 1 is increased beyond a certain value, the MPC is not able to track the reference signal as well and often undershoots the peaks, shown if Figure \ref{fig:MPCper2}. This is most likely because of the slow system dynamics and input constraints which prevent the controller to implement higher inputs which could track the reference better. Additionally, the system can only cool be convection and radiation to the ambient environment. The system cannot cool fast enough to track the reference.
@@ -93,7 +93,7 @@ Note that these are including the convergence time of the filter. The inability 
 \end{figure}
 
 % \subsubsection{Computation time}
-As discussed in section \ref{MPC_Design} the computation time of the MPC needs to be lower than the sampling time of the system in order to run this controller on-line. Figure \ref{fig:MPCcompTime} shows the time it took for the MPC to determine the next optimal input for every iteration in the step reference experiment shown in figure \ref{fig:MPCstep}. Which was, because of a single outlier, less then 0.4 seconds which is well below the system sampling time of 1 second. 
+As discussed in section \ref{MPC_Design} the computation time of the MPC needs to be lower than the sampling time of the system in order to run this controller on-line. Figure \ref{fig:MPCcompTime} shows the time it took for the MPC to determine the next optimal input for every iteration in the step reference experiment shown in Figure \ref{fig:MPCstep}. Which was, because of a single outlier, less then 0.4 seconds which is well below the system sampling time of 1 second. 
 \begin{figure}[h]
     \centering
     \includesvg[width=0.8\textwidth]{images/controller/MPCcompTime.svg}

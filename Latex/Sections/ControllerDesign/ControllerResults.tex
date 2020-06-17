@@ -13,7 +13,7 @@
 % - [x] steady state error
 % - [ ]
 
-The step responses of the closed loop systems controlled by the pole-placement controller and the MPC are shown in figure \ref{fig:compStepC}. With corresponding step response performance data in table \ref{tab:stepinfo}, determined by \textit{Matlab stepinfo()}.
+The step responses of the closed loop systems controlled by the pole-placement controller and the MPC are shown in Figure \ref{fig:compStepC}. With corresponding step response performance data in table \ref{tab:stepinfo}, determined by \textit{Matlab stepinfo()}.
 \begin{figure}
     \centering
     \includesvg[width=0.8\textwidth]{images/controller/compStepC.svg}
@@ -44,7 +44,7 @@ The MPC controller has a significantly lower rise time compared to the pole-plac
 % - [ ] How well does it track the reference signal? give error values maybe of the point in time where both systems have managed to track the reference. 
 % - [ ] reference change effect on one channel to the other channels 
 % - [ ] 
-Figure \ref{fig:compSinC} show the tracking capabilities of both controllers in on figure. The RMS error for the MPC controller is significantly lower than the RMS error for pole placement controller. The MPC controller is able to follow a sinusoidal reference, while the pole placement controller was not. The MPC controller only struggled with frequencies too high for the system dynamics. The system could not increase its temperature fast enough, even though maximum input was provided. Figure \ref{fig:MPCper1} also shows that the controller is able follow different references for the two outputs.
+Figure \ref{fig:compSinC} show the tracking capabilities of both controllers. The RMS error for the MPC controller is significantly lower than the RMS error for pole placement controller. The MPC controller is able to follow a sinusoidal reference, while the pole placement controller was not. The MPC controller only struggled with frequencies too high for the system dynamics. The system could not increase its temperature fast enough, even though maximum input was provided. Figure \ref{fig:MPCper1} also shows that the controller is able follow different references for the two outputs.
 
 \begin{figure}
     \centering
